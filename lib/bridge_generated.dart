@@ -12,9 +12,21 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'dart:ffi' as ffi;
 
 abstract class NaiaLib {
-  Future<String> greet({dynamic hint});
+  Future<PingResponse> ping({dynamic hint});
 
-  FlutterRustBridgeTaskConstMeta get kGreetConstMeta;
+  FlutterRustBridgeTaskConstMeta get kPingConstMeta;
+}
+
+class PingResponse {
+  final String version;
+  final String name;
+  final List<String> databases;
+
+  PingResponse({
+    required this.version,
+    required this.name,
+    required this.databases,
+  });
 }
 
 class NaiaLibImpl extends FlutterRustBridgeBase<NaiaLibWire>
@@ -24,17 +36,18 @@ class NaiaLibImpl extends FlutterRustBridgeBase<NaiaLibWire>
 
   NaiaLibImpl.raw(NaiaLibWire inner) : super(inner);
 
-  Future<String> greet({dynamic hint}) => executeNormal(FlutterRustBridgeTask(
-        callFfi: (port_) => inner.wire_greet(port_),
-        parseSuccessData: _wire2api_String,
-        constMeta: kGreetConstMeta,
+  Future<PingResponse> ping({dynamic hint}) =>
+      executeNormal(FlutterRustBridgeTask(
+        callFfi: (port_) => inner.wire_ping(port_),
+        parseSuccessData: _wire2api_ping_response,
+        constMeta: kPingConstMeta,
         argValues: [],
         hint: hint,
       ));
 
-  FlutterRustBridgeTaskConstMeta get kGreetConstMeta =>
+  FlutterRustBridgeTaskConstMeta get kPingConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
-        debugName: "greet",
+        debugName: "ping",
         argNames: [],
       );
 
@@ -47,6 +60,21 @@ class NaiaLibImpl extends FlutterRustBridgeBase<NaiaLibWire>
 // Section: wire2api
 String _wire2api_String(dynamic raw) {
   return raw as String;
+}
+
+List<String> _wire2api_StringList(dynamic raw) {
+  return (raw as List<dynamic>).cast<String>();
+}
+
+PingResponse _wire2api_ping_response(dynamic raw) {
+  final arr = raw as List<dynamic>;
+  if (arr.length != 3)
+    throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+  return PingResponse(
+    version: _wire2api_String(arr[0]),
+    name: _wire2api_String(arr[1]),
+    databases: _wire2api_StringList(arr[2]),
+  );
 }
 
 int _wire2api_u8(dynamic raw) {
@@ -79,17 +107,17 @@ class NaiaLibWire implements FlutterRustBridgeWireBase {
           lookup)
       : _lookup = lookup;
 
-  void wire_greet(
+  void wire_ping(
     int port_,
   ) {
-    return _wire_greet(
+    return _wire_ping(
       port_,
     );
   }
 
-  late final _wire_greetPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_greet');
-  late final _wire_greet = _wire_greetPtr.asFunction<void Function(int)>();
+  late final _wire_pingPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>('wire_ping');
+  late final _wire_ping = _wire_pingPtr.asFunction<void Function(int)>();
 
   void free_WireSyncReturnStruct(
     WireSyncReturnStruct val,

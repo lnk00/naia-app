@@ -18,14 +18,14 @@ use flutter_rust_bridge::*;
 // Section: wire functions
 
 #[no_mangle]
-pub extern "C" fn wire_greet(port_: i64) {
+pub extern "C" fn wire_ping(port_: i64) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap(
         WrapInfo {
-            debug_name: "greet",
+            debug_name: "ping",
             port: Some(port_),
             mode: FfiCallMode::Normal,
         },
-        move || move |task_callback| Ok(greet()),
+        move || move |task_callback| ping(),
     )
 }
 
@@ -69,6 +69,18 @@ impl<T> NewWithNullPtr for *mut T {
 }
 
 // Section: impl IntoDart
+
+impl support::IntoDart for PingResponse {
+    fn into_dart(self) -> support::DartCObject {
+        vec![
+            self.version.into_dart(),
+            self.name.into_dart(),
+            self.databases.into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for PingResponse {}
 
 // Section: executor
 
