@@ -12,6 +12,8 @@ reqwest = { version = "0.11", features = ["json", "blocking"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 anyhow = "1.0"
+oauth2 = "4.2"
+state = { version = "0.5", features = ["tls"] }
 
 [lib]
 crate-type = ["lib", "staticlib", "cdylib"]

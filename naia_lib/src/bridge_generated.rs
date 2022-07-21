@@ -29,13 +29,81 @@ pub extern "C" fn wire_ping(port_: i64) {
     )
 }
 
+#[no_mangle]
+pub extern "C" fn wire_get_auth_url(port_: i64, env: *mut wire_Environment) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "get_auth_url",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_env = env.wire2api();
+            move |task_callback| get_auth_url(api_env)
+        },
+    )
+}
+
+#[no_mangle]
+pub extern "C" fn wire_get_token(
+    port_: i64,
+    pkce_verifier: *mut wire_uint_8_list,
+    auth_code: *mut wire_uint_8_list,
+    env: *mut wire_Environment,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "get_token",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || {
+            let api_pkce_verifier = pkce_verifier.wire2api();
+            let api_auth_code = auth_code.wire2api();
+            let api_env = env.wire2api();
+            move |task_callback| get_token(api_pkce_verifier, api_auth_code, api_env)
+        },
+    )
+}
+
 // Section: wire structs
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_Environment {
+    auth0_client_secret: *mut wire_uint_8_list,
+    auth0_client_id: *mut wire_uint_8_list,
+    auth0_authorize_url: *mut wire_uint_8_list,
+    auth0_token_url: *mut wire_uint_8_list,
+    auth0_redirect_url: *mut wire_uint_8_list,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct wire_uint_8_list {
+    ptr: *mut u8,
+    len: i32,
+}
 
 // Section: wrapper structs
 
 // Section: static checks
 
 // Section: allocate functions
+
+#[no_mangle]
+pub extern "C" fn new_box_autoadd_environment_0() -> *mut wire_Environment {
+    support::new_leak_box_ptr(wire_Environment::new_with_null_ptr())
+}
+
+#[no_mangle]
+pub extern "C" fn new_uint_8_list_0(len: i32) -> *mut wire_uint_8_list {
+    let ans = wire_uint_8_list {
+        ptr: support::new_leak_vec_ptr(Default::default(), len),
+        len,
+    };
+    support::new_leak_box_ptr(ans)
+}
 
 // Section: impl Wire2Api
 
@@ -56,6 +124,47 @@ where
     }
 }
 
+impl Wire2Api<String> for *mut wire_uint_8_list {
+    fn wire2api(self) -> String {
+        let vec: Vec<u8> = self.wire2api();
+        String::from_utf8_lossy(&vec).into_owned()
+    }
+}
+
+impl Wire2Api<Environment> for *mut wire_Environment {
+    fn wire2api(self) -> Environment {
+        let wrap = unsafe { support::box_from_leak_ptr(self) };
+        (*wrap).wire2api().into()
+    }
+}
+
+impl Wire2Api<Environment> for wire_Environment {
+    fn wire2api(self) -> Environment {
+        Environment {
+            auth0_client_secret: self.auth0_client_secret.wire2api(),
+            auth0_client_id: self.auth0_client_id.wire2api(),
+            auth0_authorize_url: self.auth0_authorize_url.wire2api(),
+            auth0_token_url: self.auth0_token_url.wire2api(),
+            auth0_redirect_url: self.auth0_redirect_url.wire2api(),
+        }
+    }
+}
+
+impl Wire2Api<u8> for u8 {
+    fn wire2api(self) -> u8 {
+        self
+    }
+}
+
+impl Wire2Api<Vec<u8>> for *mut wire_uint_8_list {
+    fn wire2api(self) -> Vec<u8> {
+        unsafe {
+            let wrap = support::box_from_leak_ptr(self);
+            support::vec_from_leak_ptr(wrap.ptr, wrap.len)
+        }
+    }
+}
+
 // Section: impl NewWithNullPtr
 
 pub trait NewWithNullPtr {
@@ -68,7 +177,26 @@ impl<T> NewWithNullPtr for *mut T {
     }
 }
 
+impl NewWithNullPtr for wire_Environment {
+    fn new_with_null_ptr() -> Self {
+        Self {
+            auth0_client_secret: core::ptr::null_mut(),
+            auth0_client_id: core::ptr::null_mut(),
+            auth0_authorize_url: core::ptr::null_mut(),
+            auth0_token_url: core::ptr::null_mut(),
+            auth0_redirect_url: core::ptr::null_mut(),
+        }
+    }
+}
+
 // Section: impl IntoDart
+
+impl support::IntoDart for AuthorizationUrl {
+    fn into_dart(self) -> support::DartCObject {
+        vec![self.url.into_dart(), self.pkce_verifier.into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for AuthorizationUrl {}
 
 impl support::IntoDart for PingResponse {
     fn into_dart(self) -> support::DartCObject {
