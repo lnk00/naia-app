@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:naia_app/ffi.tool.dart';
 import 'package:naia_app/screens/home.screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'notifiers/oauth.notifier.dart';
+import 'tools/ffi.tool.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
