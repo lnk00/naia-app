@@ -6,33 +6,31 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:naia_app/tools/ffi.tool.dart';
 import 'package:naia_app/components/notification.component.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   void _onPingPressed() async {
     String message;
 
-    // try {
-    //   PingResponse res = await naiaAPI.ping();
-    //   message = "Ping from ${res.name} version ${res.version} succeeded";
-    // } catch (err) {
-    //   message = "Ping not succeeded";
-    // }
-
-    message = "Ping not succeeded";
+    try {
+      PingResponse res = await naiaAPI.ping();
+      message = "Ping from ${res.name} version ${res.version} succeeded";
+    } catch (err) {
+      message = "Ping not succeeded";
+    }
 
     if (mounted) {
       late OverlayEntry overlay;
       overlay = OverlayEntry(
         builder: (BuildContext context) {
-          return NaiaNotification(
+          return NotificationComponent(
             message,
             () => {overlay.remove()},
           );

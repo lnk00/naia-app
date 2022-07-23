@@ -11,17 +11,17 @@ import 'tools/ffi.tool.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<App> createState() => _AppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _AppState extends State<App> {
   StreamSubscription? _sub;
 
   void _handleIncomingLinks(OAuthNotifier notifier) {
@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(),
-              home: const MyHomePage(title: ''),
+              home: const HomeScreen(title: ''),
               debugShowCheckedModeBanner: false,
             );
           },

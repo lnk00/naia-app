@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class NaiaNotification extends StatefulWidget {
+class NotificationComponent extends StatefulWidget {
   final String message;
   final VoidCallback callback;
 
-  const NaiaNotification(this.message, this.callback, {Key? key})
+  const NotificationComponent(this.message, this.callback, {Key? key})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => NaiaNotificationState();
+  State<StatefulWidget> createState() => NotificationComponentState();
 }
 
-class NaiaNotificationState extends State<NaiaNotification>
+class NotificationComponentState extends State<NotificationComponent>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<Offset> position;
