@@ -42,7 +42,7 @@ pub fn get_auth_url(env: Environment) -> Result<AuthorizationUrl> {
 
     let (pkce_challenge, pkce_verifier) = PkceCodeChallenge::new_random_sha256();
 
-    let (auth_url, csrf_token) = client
+    let (auth_url, _csrf_token) = client
         .authorize_url(CsrfToken::new_random)
         .add_scope(Scope::new("read".to_string()))
         .add_scope(Scope::new("write".to_string()))
