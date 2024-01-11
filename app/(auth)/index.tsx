@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { TouchableOpacity, Text, View } from 'react-native';
 
-import authSplash from '../../assets/images/auth-splash.webp';
+import horseBalloon from '../../assets/images/horse-balloon.png';
 
 export default function AuthScreen() {
   const router = useRouter();
@@ -14,10 +14,10 @@ export default function AuthScreen() {
 
   return (
     <View className="flex-1 items-center">
-      <View className="h-full w-full relative">
+      <View className="h-full w-full flex-1 items-center justify-center relative bg-main">
         <Image
-          source={authSplash}
-          style={{ width: '100%', height: '100%' }}
+          source={horseBalloon}
+          style={{ width: '70%', height: '75%' }}
           contentFit="contain"
           contentPosition="top"
         />
@@ -29,7 +29,7 @@ export default function AuthScreen() {
           </Text>
 
           <TouchableOpacity
-            className="flex flex-row gap-2 items-center justify-center p-4 border-2 border-lightGray rounded mt-8 w-full"
+            className="flex flex-row gap-2 items-center justify-center p-4 border-2 border-lightGray rounded-xl mt-8 w-full"
             onPress={() => {}}
           >
             <Fontisto name="email" size={24} color="#2A2D32" />
@@ -38,7 +38,7 @@ export default function AuthScreen() {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            className="flex flex-row gap-2 items-center justify-center p-4 border-2 border-lightGray rounded mt-4 w-full"
+            className="flex flex-row gap-2 items-center justify-center p-4 border-2 border-lightGray rounded-xl mt-4 w-full"
             onPress={goToEmailScreen}
           >
             <Fontisto name="email" size={24} color="#2A2D32" />

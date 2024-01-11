@@ -36,17 +36,18 @@ export default function EmailScreen() {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View className="flex-1 justify-center gap-4 px-12 w-full">
             <TextInput
-              className="p-4 border-2 border-lightGray rounded w-full"
+              className="p-4 border-2 border-lightGray rounded-xl w-full"
               placeholder="Adresse email"
               autoComplete="email"
               placeholderTextColor="rgba(42, 45, 50, 0.43)"
+              selectionColor="#2A2D32"
               onChangeText={() => {}}
               ref={(elem) => {
                 emailInputRef.current = elem as TextInput;
               }}
             />
             <TouchableOpacity
-              className="flex flex-row gap-2 items-center justify-center p-4 bg-main rounded w-full"
+              className="flex flex-row gap-2 items-center justify-center p-4 bg-main rounded-xl w-full"
               onPress={goToOtp}
             >
               <Text className="text-dark font-semibold">Continuer</Text>

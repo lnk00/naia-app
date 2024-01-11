@@ -49,11 +49,12 @@ export default function OtpScreen() {
             {otp.map((digit, index) => (
               <TextInput
                 key={index}
-                className="w-12 h-12 border-2 border-lightGray rounded text-center"
+                className="w-12 h-12 border-2 border-lightGray rounded-xl text-center"
                 maxLength={1}
                 keyboardType="numeric"
                 onChangeText={(value) => handleOtpChange(value, index)}
                 value={digit}
+                selectionColor="#2A2D32"
                 ref={(input) => {
                   inputs[index] = input;
                 }}
@@ -61,7 +62,7 @@ export default function OtpScreen() {
             ))}
           </View>
           <TouchableOpacity
-            className="flex flex-row gap-2 items-center justify-center p-4 bg-main rounded w-full mt-4"
+            className="flex flex-row gap-2 items-center justify-center p-4 bg-main rounded-xl w-full mt-4"
             onPress={verifyOtp}
           >
             <Text className="text-dark font-semibold">Continuer</Text>
