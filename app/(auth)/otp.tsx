@@ -28,7 +28,7 @@ export default function OtpScreen() {
   };
 
   const verifyOtp = () => {
-    router.replace('/(tabs)');
+    router.replace('/(home)');
   };
 
   useEffect(() => {
