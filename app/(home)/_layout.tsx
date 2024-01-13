@@ -20,6 +20,9 @@ export default function HomeLayout() {
         options={{
           headerShadowVisible: false,
           title: '',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
           headerRight: () => (
             <TouchableOpacity onPress={goToSearch} className="mr-4">
               <Fontisto name="search" size={24} color="#2A2D32" />
