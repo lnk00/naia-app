@@ -1,6 +1,6 @@
 /* eslint-disable indent */
-import { AuthError, Session } from '@supabase/supabase-js';
-import { createContext, useContext, useState } from 'react';
+import { AuthChangeEvent, AuthError, Session } from '@supabase/supabase-js';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import { supabase } from '../lib/supabase';
 
@@ -54,6 +54,16 @@ export function SessionProvider(props: React.PropsWithChildren) {
       return { error };
     });
   };
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(
+      (event: AuthChangeEvent, session: Session | null) => {
+        console.log('Auth event received: ', event);
+        console.log('Session: ', session);
+        setSession(session);
+      },
+    );
+  }, []);
 
   return (
     <AuthContext.Provider

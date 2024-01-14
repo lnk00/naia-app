@@ -12,7 +12,6 @@ import { useColorScheme } from 'react-native';
 
 import '../style.css';
 import { SessionProvider } from '../contexts/auth';
-import { supabase } from '../lib/supabase';
 
 const queryClient = new QueryClient();
 
@@ -47,16 +46,6 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('GET SESSION: ', session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      console.log('AUTH STATE CHANGE: ', session);
-    });
-  }, []);
 
   if (!loaded) {
     return null;

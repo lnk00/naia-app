@@ -45,8 +45,9 @@ export default function OtpScreen() {
   };
 
   useEffect(() => {
-    console.log(params.email);
-    inputs[0]!.focus();
+    setTimeout(() => {
+      inputs[0]!.focus();
+    }, 800);
   }, []);
 
   return (
