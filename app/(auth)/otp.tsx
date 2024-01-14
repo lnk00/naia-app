@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
   View,
@@ -11,7 +11,10 @@ import {
   Text,
 } from 'react-native';
 
+import { supabase } from '../../lib/supabase';
+
 export default function OtpScreen() {
+  const params = useLocalSearchParams<{ email: string }>();
   const router = useRouter();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputs: (TextInput | null)[] = [];
@@ -27,11 +30,25 @@ export default function OtpScreen() {
     }
   };
 
-  const verifyOtp = () => {
+  const verifyOtp = async () => {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: params.email,
+      token: otp.join(''),
+      type: 'email',
+    });
+
+    console.log('ERROR: ', error);
+    console.log('DATA: ', data);
+
+    if (error) {
+      return;
+    }
+
     router.replace('/(home)');
   };
 
   useEffect(() => {
+    console.log(params.email);
     inputs[0]!.focus();
   }, []);
 

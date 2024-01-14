@@ -30,7 +30,9 @@ export default function AuthScreen() {
 
           <TouchableOpacity
             className="flex flex-row gap-2 items-center justify-center p-4 border-2 border-lightGray rounded-xl mt-8 w-full"
-            onPress={() => {}}
+            onPress={() => {
+              router.replace('/(home)');
+            }}
           >
             <Fontisto name="email" size={24} color="#2A2D32" />
             <Text className="text-dark font-semibold">
