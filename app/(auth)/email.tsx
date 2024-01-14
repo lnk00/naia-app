@@ -17,7 +17,9 @@ export default function EmailScreen() {
   const emailInputRef = useRef<TextInput>();
 
   useEffect(() => {
-    emailInputRef.current!.focus();
+    setTimeout(() => {
+      emailInputRef.current!.focus();
+    }, 800);
   });
 
   const goToOtp = () => {
@@ -30,7 +32,7 @@ export default function EmailScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1 items-center w-full"
       >
-        <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-12">
+        <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-4">
           Renseigne ton adresse email.
         </Text>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

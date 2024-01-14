@@ -40,7 +40,7 @@ export default function OtpScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       className="flex-1 bg-white items-center"
     >
-      <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-12">
+      <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-4">
         Rentre le code reçu sur ton adresse email.
       </Text>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

@@ -1,7 +1,14 @@
 import { Fontisto } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { View, Text, SectionList, TouchableOpacity } from 'react-native';
 
 export default function TabOneScreen() {
+  const router = useRouter();
+
+  const goToProfile = () => {
+    router.push('/profile');
+  };
+
   const DATA = [
     {
       month: 'Février',
@@ -74,7 +81,10 @@ export default function TabOneScreen() {
         stickySectionHeadersEnabled
         keyExtractor={(item, index) => item.name + index}
         renderItem={({ item }) => (
-          <TouchableOpacity className="bg-main rounded-xl p-4 w-full mb-2 flex flex-row items-center">
+          <TouchableOpacity
+            className="bg-main rounded-xl p-4 w-full mb-2 flex flex-row items-center"
+            onPress={goToProfile}
+          >
             <View className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
               <Text className="text-main font-bold">DD</Text>
             </View>

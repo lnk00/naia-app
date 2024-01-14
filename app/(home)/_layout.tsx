@@ -13,6 +13,10 @@ export default function HomeLayout() {
     router.push('/modal');
   };
 
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <Stack>
       <Stack.Screen
@@ -23,16 +27,26 @@ export default function HomeLayout() {
           headerStyle: {
             backgroundColor: '#fff',
           },
-          headerRight: () => (
-            <TouchableOpacity onPress={goToSearch} className="mr-4">
-              <Fontisto name="search" size={24} color="#2A2D32" />
-            </TouchableOpacity>
-          ),
           headerLeft: () => (
             <TouchableOpacity onPress={goToProfile} className="ml-4">
               <View className="h-10 w-10 bg-main rounded-full flex items-center justify-center">
                 <Text className="font-medium text-dark">DD</Text>
               </View>
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="profile"
+        options={{
+          headerShadowVisible: false,
+          title: '',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={goBack} className="ml-4">
+              <Fontisto name="angle-left" size={16} color="#2A2D32" />
             </TouchableOpacity>
           ),
         }}
