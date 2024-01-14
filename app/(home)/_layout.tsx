@@ -9,10 +9,6 @@ export default function HomeLayout() {
     router.push('/modal');
   };
 
-  const goToSearch = () => {
-    router.push('/modal');
-  };
-
   const goBack = () => {
     router.back();
   };
