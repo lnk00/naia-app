@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Text,
   TextInput,
@@ -12,9 +12,12 @@ import {
   Platform,
 } from 'react-native';
 
+import { supabase } from '../../lib/supabase';
+
 export default function EmailScreen() {
   const router = useRouter();
   const emailInputRef = useRef<TextInput>();
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,7 +25,14 @@ export default function EmailScreen() {
     }, 800);
   });
 
-  const goToOtp = () => {
+  const goToOtp = async () => {
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+    });
+
+    console.log('ERROR: ', error);
+    console.log('DATA: ', data);
+
     router.push('/otp');
   };
 
@@ -43,7 +53,7 @@ export default function EmailScreen() {
               autoComplete="email"
               placeholderTextColor="rgba(42, 45, 50, 0.43)"
               selectionColor="#2A2D32"
-              onChangeText={() => {}}
+              onChangeText={setEmail}
               ref={(elem) => {
                 emailInputRef.current = elem as TextInput;
               }}

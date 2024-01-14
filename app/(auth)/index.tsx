@@ -46,12 +46,6 @@ export default function AuthScreen() {
               Continuer avec Email
             </Text>
           </TouchableOpacity>
-          <View className="mt-8 flex flex-row gap-2 items-basline justify-center">
-            <Text className="text-dark">Tu as déjà un compte ?</Text>
-            <TouchableOpacity onPress={() => {}}>
-              <Text className="text-main">Se connecter</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     </View>
