@@ -1,13 +1,14 @@
 import { useRouter } from 'expo-router';
 import { View, Button } from 'react-native';
 
-import { supabase } from '../../lib/supabase';
+import { useSession } from '../../contexts/auth';
 
 export default function ModalScreen() {
   const router = useRouter();
+  const { signOut } = useSession();
 
   const signout = async () => {
-    await supabase.auth.signOut();
+    await signOut();
     router.replace('/(auth)');
   };
 

@@ -11,12 +11,16 @@ import {
   Text,
 } from 'react-native';
 
-import { supabase } from '../../lib/supabase';
+import { useSession } from '../../contexts/auth';
 
 export default function OtpScreen() {
   const params = useLocalSearchParams<{ email: string }>();
+
   const router = useRouter();
+  const { verifyOtp } = useSession();
+
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+
   const inputs: (TextInput | null)[] = [];
 
   const handleOtpChange = (value: string, index: number) => {
@@ -30,15 +34,8 @@ export default function OtpScreen() {
     }
   };
 
-  const verifyOtp = async () => {
-    const { data, error } = await supabase.auth.verifyOtp({
-      email: params.email,
-      token: otp.join(''),
-      type: 'email',
-    });
-
-    console.log('ERROR: ', error);
-    console.log('DATA: ', data);
+  const verify = async () => {
+    const { error } = await verifyOtp(params.email, otp.join(''));
 
     if (error) {
       return;
@@ -80,7 +77,7 @@ export default function OtpScreen() {
           </View>
           <TouchableOpacity
             className="flex flex-row gap-2 items-center justify-center p-4 bg-main rounded-xl w-full mt-4"
-            onPress={verifyOtp}
+            onPress={verify}
           >
             <Text className="text-dark font-semibold">Continuer</Text>
           </TouchableOpacity>

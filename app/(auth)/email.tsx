@@ -13,15 +13,17 @@ import {
 } from 'react-native';
 import validator from 'validator';
 
-import { supabase } from '../../lib/supabase';
+import { useSession } from '../../contexts/auth';
 
 export default function EmailScreen() {
   const router = useRouter();
-  const emailInputRef = useRef<TextInput>();
+  const { signInWithOtp } = useSession();
 
   const [email, setEmail] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [isAuthError, setIsAuthError] = useState(false);
+
+  const emailInputRef = useRef<TextInput>();
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,11 +41,9 @@ export default function EmailScreen() {
     setDisabled(true);
   };
 
-  const signInWithOtp = async () => {
+  const onSignin = async () => {
     setDisabled(true);
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-    });
+    const { error } = await signInWithOtp(email);
 
     if (error) {
       setIsAuthError(true);
@@ -90,7 +90,7 @@ export default function EmailScreen() {
                 'flex flex-row gap-2 items-center justify-center p-4 rounded-xl w-full ' +
                 (disabled ? ' bg-lightGray opacity-50' : ' bg-main')
               }
-              onPress={signInWithOtp}
+              onPress={onSignin}
             >
               <Text className="text-dark font-semibold">Continuer</Text>
             </TouchableOpacity>
