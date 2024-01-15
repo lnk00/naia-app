@@ -28,7 +28,7 @@ export default function OtpScreen() {
     newOtp[index] = value;
     setOtp(newOtp);
     if (value && index < newOtp.length - 1) {
-      inputs[index + 1]!.focus();
+      inputs[index + 1]?.focus();
     } else if (value && index === newOtp.length - 1) {
       Keyboard.dismiss();
     }
@@ -46,7 +46,7 @@ export default function OtpScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      inputs[0]!.focus();
+      inputs[0]?.focus();
     }, 800);
   }, []);
 

@@ -27,9 +27,9 @@ export default function EmailScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      emailInputRef.current!.focus();
+      emailInputRef.current?.focus();
     }, 800);
-  });
+  }, []);
 
   const validateEmail = (inputValue: string) => {
     setEmail(inputValue);
@@ -77,6 +77,8 @@ export default function EmailScreen() {
               }
               placeholder="Adresse email"
               autoComplete="email"
+              autoCorrect={false}
+              autoCapitalize="none"
               placeholderTextColor="rgba(42, 45, 50, 0.43)"
               selectionColor="#2A2D32"
               onChangeText={validateEmail}
