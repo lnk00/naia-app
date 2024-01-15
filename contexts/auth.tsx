@@ -9,13 +9,13 @@ const AuthContext = createContext<{
   verifyOtp: (
     email: string,
     token: string,
-  ) => Promise<{ error: AuthError | null }>;
+  ) => Promise<{ error: AuthError | null; isUserNew: boolean }>;
   signOut: () => Promise<{ error: AuthError | null }>;
   fetchSession: () => Promise<Session | null>;
   session: Session | null;
 }>({
   signInWithOtp: async () => ({ error: null }),
-  verifyOtp: async () => ({ error: null }),
+  verifyOtp: async () => ({ error: null, isUserNew: false }),
   signOut: async () => ({ error: null }),
   fetchSession: async () => null,
   session: null,
@@ -42,12 +42,21 @@ export function SessionProvider(props: React.PropsWithChildren) {
   };
 
   const verifyOtp = async (email: string, token: string) => {
-    return supabase.auth
-      .verifyOtp({ email, token, type: 'email' })
-      .then(({ data, error }) => {
-        setSession(data.session);
-        return { error };
-      });
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'email',
+    });
+
+    setSession(data.session);
+
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select()
+      .eq('id', data.session?.user.id)
+      .single();
+
+    return { error, isUserNew: !profileData.updated_at };
   };
 
   const signOut = async () => {

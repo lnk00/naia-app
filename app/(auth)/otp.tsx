@@ -35,11 +35,13 @@ export default function OtpScreen() {
   };
 
   const verify = async () => {
-    const { error } = await verifyOtp(params.email, otp.join(''));
+    const { error, isUserNew } = await verifyOtp(params.email, otp.join(''));
 
     if (error) {
       return;
     }
+
+    console.log('Is user new: ', isUserNew);
 
     router.replace('/(home)');
   };
