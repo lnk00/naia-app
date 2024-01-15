@@ -36,19 +36,15 @@ export default function RootLayout() {
     if (error) throw error;
   }, [error]);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
   if (!loaded) {
     return null;
   }
 
   return (
     <SessionProvider>
-      <RootLayoutNav />
+      <QueryClientProvider client={queryClient}>
+        <RootLayoutNav />
+      </QueryClientProvider>
     </SessionProvider>
   );
 }
@@ -65,19 +61,18 @@ function RootLayoutNav() {
           if (!session) {
             router.replace('/(auth)');
           }
+          setTimeout(() => SplashScreen.hideAsync(), 1000);
         });
       });
     }
   }, [rootNav]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(home)" options={{ headerShown: false }} />
-        </Stack>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ThemeProvider value={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
+      </Stack>
+    </ThemeProvider>
   );
 }
