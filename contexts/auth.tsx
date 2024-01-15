@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import { AuthChangeEvent, AuthError, Session } from '@supabase/supabase-js';
+import { router, useSegments } from 'expo-router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { supabase } from '../lib/supabase';
@@ -32,6 +33,7 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
+  const segments = useSegments();
 
   const signInWithOtp = async (email: string) => {
     return supabase.auth.signInWithOtp({ email }).then(({ error }) => {
@@ -61,9 +63,20 @@ export function SessionProvider(props: React.PropsWithChildren) {
         console.log('Auth event received: ', event);
         console.log('Session: ', session);
         setSession(session);
+        if (session && segments.includes('(auth)' as never)) {
+          router.replace('/(home)');
+        } else if (!session && segments.includes('(home)' as never)) {
+          router.replace('/(auth)');
+        }
       },
     );
   }, []);
+
+  useEffect(() => {
+    if (!session && segments.includes('(home)' as never)) {
+      router.replace('/(auth)');
+    }
+  }, [segments]);
 
   return (
     <AuthContext.Provider
