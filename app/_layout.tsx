@@ -6,26 +6,21 @@ import {
 } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen, Stack, router, useRootNavigation } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 
 import '../style.css';
-import { SessionProvider } from '../contexts/auth';
+import { SessionProvider, useSession } from '../contexts/auth';
 
 const queryClient = new QueryClient();
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '/(home)',
+  initialRouteName: '/(home)/index',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -51,24 +46,38 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <SessionProvider>
+      <RootLayoutNav />
+    </SessionProvider>
+  );
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const rootNav = useRootNavigation();
+  const { fetchSession } = useSession();
+
+  useEffect(() => {
+    if (rootNav?.isReady) {
+      setTimeout(() => {
+        fetchSession().then((session) => {
+          if (!session) {
+            router.replace('/(auth)');
+          }
+        });
+      });
+    }
+  }, [rootNav]);
 
   return (
-    <SessionProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-        >
-          <Stack>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(home)" options={{ headerShown: false }} />
-          </Stack>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        </Stack>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }

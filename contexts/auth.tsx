@@ -1,6 +1,5 @@
 /* eslint-disable indent */
 import { AuthChangeEvent, AuthError, Session } from '@supabase/supabase-js';
-import { router, useSegments } from 'expo-router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { supabase } from '../lib/supabase';
@@ -12,11 +11,13 @@ const AuthContext = createContext<{
     token: string,
   ) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<{ error: AuthError | null }>;
+  fetchSession: () => Promise<Session | null>;
   session: Session | null;
 }>({
   signInWithOtp: async () => ({ error: null }),
   verifyOtp: async () => ({ error: null }),
   signOut: async () => ({ error: null }),
+  fetchSession: async () => null,
   session: null,
 });
 
@@ -33,7 +34,6 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
-  const segments = useSegments();
 
   const signInWithOtp = async (email: string) => {
     return supabase.auth.signInWithOtp({ email }).then(({ error }) => {
@@ -57,26 +57,22 @@ export function SessionProvider(props: React.PropsWithChildren) {
     });
   };
 
+  const fetchSession = async () => {
+    return supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      return data.session;
+    });
+  };
+
   useEffect(() => {
     supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, session: Session | null) => {
         console.log('Auth event received: ', event);
         console.log('Session: ', session);
         setSession(session);
-        if (session && segments.includes('(auth)' as never)) {
-          router.replace('/(home)');
-        } else if (!session && segments.includes('(home)' as never)) {
-          router.replace('/(auth)');
-        }
       },
     );
   }, []);
-
-  useEffect(() => {
-    if (!session && segments.includes('(home)' as never)) {
-      router.replace('/(auth)');
-    }
-  }, [segments]);
 
   return (
     <AuthContext.Provider
@@ -84,6 +80,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         signInWithOtp,
         verifyOtp,
         signOut,
+        fetchSession,
         session,
       }}
     >
