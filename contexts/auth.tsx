@@ -11,7 +11,7 @@ const AuthContext = createContext<{
     token: string,
   ) => Promise<{ error: AuthError | null; isUserNew: boolean }>;
   signOut: () => Promise<{ error: AuthError | null }>;
-  fetchSession: () => Promise<Session | null>;
+  fetchSession: () => Promise<string | null>;
   session: Session | null;
 }>({
   signInWithOtp: async () => ({ error: null }),
@@ -67,10 +67,25 @@ export function SessionProvider(props: React.PropsWithChildren) {
   };
 
   const fetchSession = async () => {
-    return supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      return data.session;
-    });
+    const { data } = await supabase.auth.getSession();
+
+    setSession(data.session);
+
+    if (!data.session) {
+      return '/(auth)';
+    }
+
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select()
+      .eq('id', data.session?.user.id)
+      .single();
+
+    if (!profileData.updated_at) {
+      return '/(onboarding)';
+    }
+
+    return null;
   };
 
   useEffect(() => {
