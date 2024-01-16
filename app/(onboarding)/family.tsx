@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   Text,
@@ -12,8 +11,7 @@ import {
   Platform,
 } from 'react-native';
 
-export default function NameScreen() {
-  const router = useRouter();
+export default function FamilyScreen() {
   const [name, setName] = useState('');
 
   const nameInputRef = useRef<TextInput>();
@@ -24,10 +22,6 @@ export default function NameScreen() {
     }, 800);
   }, []);
 
-  const onContinue = () => {
-    router.push('/family');
-  };
-
   return (
     <SafeAreaView className="bg-white flex-1">
       <KeyboardAvoidingView
@@ -35,14 +29,14 @@ export default function NameScreen() {
         className="flex-1 items-center w-full"
       >
         <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-4">
-          Renseigne ton prénom.
+          Renseigne ton nom.
         </Text>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View className="flex-1 justify-center gap-4 px-12 w-full">
             <TextInput
               className="p-4 border-2 border-lightGray rounded-xl w-full"
-              placeholder="Prénom"
-              autoComplete="given-name"
+              placeholder="Nom"
+              autoComplete="family-name"
               autoCorrect={false}
               placeholderTextColor="rgba(42, 45, 50, 0.43)"
               selectionColor="#2A2D32"
@@ -56,7 +50,7 @@ export default function NameScreen() {
                 'flex flex-row gap-2 items-center justify-center p-4 rounded-xl w-full ' +
                 (name.length > 0 ? ' bg-main' : ' bg-lightGray opacity-50')
               }
-              onPress={onContinue}
+              onPress={() => {}}
             >
               <Text className="text-dark font-semibold">Continuer</Text>
             </TouchableOpacity>

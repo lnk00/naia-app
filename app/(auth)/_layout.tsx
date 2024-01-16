@@ -26,7 +26,7 @@ export default function AuthLayout() {
             backgroundColor: '#fff',
           },
           headerLeft: () => (
-            <TouchableOpacity onPress={goBack} className="ml-4">
+            <TouchableOpacity onPress={goBack} className="p-4">
               <Fontisto name="angle-left" size={16} color="#2A2D32" />
             </TouchableOpacity>
           ),
@@ -42,7 +42,7 @@ export default function AuthLayout() {
             backgroundColor: '#fff',
           },
           headerRight: () => (
-            <TouchableOpacity onPress={goBack} className="ml-4">
+            <TouchableOpacity onPress={goBack} className="p-4">
               <Fontisto name="close-a" size={16} color="#2A2D32" />
             </TouchableOpacity>
           ),
