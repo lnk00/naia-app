@@ -8,6 +8,7 @@ import { useColorScheme } from 'react-native';
 
 import '../style.css';
 import { SessionProvider, useSession } from '../contexts/auth';
+import { supabase } from '../lib/supabase';
 
 const queryClient = new QueryClient();
 
@@ -56,8 +57,20 @@ function RootLayoutNav() {
         fetchSession().then((session) => {
           if (!session) {
             router.replace('/(auth)');
+            setTimeout(() => SplashScreen.hideAsync(), 1000);
+          } else {
+            supabase
+              .from('profiles')
+              .select()
+              .eq('id', session?.user.id)
+              .single()
+              .then(({ data }) => {
+                if (!data.updated_at) {
+                  router.replace('/(onboarding)');
+                  setTimeout(() => SplashScreen.hideAsync(), 1000);
+                }
+              });
           }
-          setTimeout(() => SplashScreen.hideAsync(), 1000);
         });
       });
     }
@@ -67,6 +80,7 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>

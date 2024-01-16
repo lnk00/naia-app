@@ -41,9 +41,11 @@ export default function OtpScreen() {
       return;
     }
 
-    console.log('Is user new: ', isUserNew);
-
-    router.replace('/(home)');
+    if (isUserNew) {
+      router.replace('/(onboarding)');
+    } else {
+      router.replace('/(home)');
+    }
   };
 
   useEffect(() => {
