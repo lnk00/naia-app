@@ -25,7 +25,7 @@ export default function NameScreen() {
   }, []);
 
   const onContinue = () => {
-    router.push('/family');
+    router.push({ pathname: '/family', params: { name } });
   };
 
   return (

@@ -36,6 +36,21 @@ export default function OnboardingLayout() {
           ),
         }}
       />
+      <Stack.Screen
+        name="birthday"
+        options={{
+          headerShadowVisible: false,
+          title: '',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={goBack} className="p-4">
+              <Fontisto name="angle-left" size={16} color="#2A2D32" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Stack>
   );
 }

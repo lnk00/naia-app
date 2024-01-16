@@ -1,3 +1,4 @@
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   Text,
@@ -12,7 +13,9 @@ import {
 } from 'react-native';
 
 export default function FamilyScreen() {
-  const [name, setName] = useState('');
+  const params = useLocalSearchParams<{ name: string }>();
+  const router = useRouter();
+  const [familyName, setFamilyName] = useState('');
 
   const nameInputRef = useRef<TextInput>();
 
@@ -21,6 +24,13 @@ export default function FamilyScreen() {
       nameInputRef.current?.focus();
     }, 800);
   }, []);
+
+  const onContinue = () => {
+    router.push({
+      pathname: '/birthday',
+      params: { name: params.name, familyName },
+    });
+  };
 
   return (
     <SafeAreaView className="bg-white flex-1">
@@ -40,7 +50,7 @@ export default function FamilyScreen() {
               autoCorrect={false}
               placeholderTextColor="rgba(42, 45, 50, 0.43)"
               selectionColor="#2A2D32"
-              onChangeText={setName}
+              onChangeText={setFamilyName}
               ref={(elem) => {
                 nameInputRef.current = elem as TextInput;
               }}
@@ -48,9 +58,11 @@ export default function FamilyScreen() {
             <TouchableOpacity
               className={
                 'flex flex-row gap-2 items-center justify-center p-4 rounded-xl w-full ' +
-                (name.length > 0 ? ' bg-main' : ' bg-lightGray opacity-50')
+                (familyName.length > 0
+                  ? ' bg-main'
+                  : ' bg-lightGray opacity-50')
               }
-              onPress={() => {}}
+              onPress={onContinue}
             >
               <Text className="text-dark font-semibold">Continuer</Text>
             </TouchableOpacity>
