@@ -2,12 +2,14 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
+import * as Notifications from 'expo-notifications';
 import { SplashScreen, Stack, router, useRootNavigation } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
 
 import '../style.css';
 import { SessionProvider, useSession } from '../contexts/auth';
+import { registerForPushNotificationsAsync } from '../lib/notification';
 
 const queryClient = new QueryClient();
 
@@ -27,7 +29,40 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  const [expoPushToken, setExpoPushToken] = useState('');
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      if (token) {
+        setExpoPushToken(token);
+      }
+    });
+
+    const notificationListener = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log('NOTIFICATION RECEIVED: ', notification);
+      },
+    );
+
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response, expoPushToken);
+      });
+
+    return () => {
+      notificationListener.remove();
+      responseListener.remove();
+    };
+  }, []);
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);
