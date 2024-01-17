@@ -37,10 +37,10 @@ export default function ModalScreen() {
           <Text className="font-bold text-2xl text-dark">DD</Text>
         </View>
         <Text className="font-heading text-5xl text-dark mt-4">
-          {data?.full_name.split(' ')[0]}
+          {data?.fullName.split(' ')[0]}
         </Text>
         <Text className="font-heading text-5xl text-dark">
-          {data?.full_name.split(' ')[1]}
+          {data?.fullName.split(' ')[1]}
         </Text>
         <View className="flex flex-row gap-2 ">
           <Text className="font-bold text-4xl text-dark mt-4">Né le,</Text>

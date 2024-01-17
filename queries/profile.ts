@@ -4,8 +4,8 @@ import { supabase } from '../lib/supabase';
 
 type Profile = {
   id: number;
-  updated_at: Date;
-  full_name: string;
+  updatedAt: Date;
+  fullName: string;
   birthday: Date;
 };
 
@@ -33,8 +33,8 @@ const fetchProfile = async (
     .single();
   return {
     id: data.id,
-    updated_at: new Date(data.updated_at),
-    full_name: data.full_name,
+    updatedAt: new Date(data.updated_at),
+    fullName: data.full_name,
     birthday: new Date(data.birthday),
   };
 };
@@ -59,8 +59,8 @@ const updateProfile = async (
 
   return {
     id: data.id,
-    updated_at: new Date(data.updated_at),
-    full_name: data.full_name,
+    updatedAt: new Date(data.updated_at),
+    fullName: data.full_name,
     birthday: new Date(data.birthday),
   };
 };
