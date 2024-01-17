@@ -9,100 +9,57 @@ import { useGetBirthdays } from '../../queries/birthday';
 export default function TabOneScreen() {
   const router = useRouter();
   const { session } = useSession();
-  const { data } = useGetBirthdays({ id: session?.user.id || '' });
+  const { data, isLoading, isError } = useGetBirthdays({
+    id: session?.user.id || '',
+  });
 
-  const goToProfile = () => {
-    console.log('my datas: ', data);
-    router.push('/profile');
+  const goToProfile = (fullName: string, birthday: string) => {
+    router.push({ pathname: '/profile', params: { fullName, birthday } });
   };
 
-  const DATA = [
-    {
-      month: 'Février',
-      data: [
-        {
-          name: 'Damien',
-          familyName: 'Dumontet',
-          birthday: new Date(1995, 0, 24),
-        },
-        {
-          name: 'Alexandre',
-          familyName: 'Machelon',
-          birthday: new Date(1995, 11, 22),
-        },
-        {
-          name: 'Florian',
-          familyName: 'Rasoamanana',
-          birthday: new Date(1995, 7, 12),
-        },
-      ],
-    },
-    {
-      month: 'Avril',
-      data: [
-        {
-          name: 'Damien',
-          familyName: 'Dumontet',
-          birthday: new Date(1995, 0, 24),
-        },
-        {
-          name: 'Alexandre',
-          familyName: 'Machelon',
-          birthday: new Date(1995, 11, 22),
-        },
-        {
-          name: 'Florian',
-          familyName: 'Rasoamanana',
-          birthday: new Date(1995, 7, 12),
-        },
-      ],
-    },
-    {
-      month: 'Septembre',
-      data: [
-        {
-          name: 'Damien',
-          familyName: 'Dumontet',
-          birthday: new Date(1995, 0, 24),
-        },
-        {
-          name: 'Alexandre',
-          familyName: 'Machelon',
-          birthday: new Date(1995, 11, 22),
-        },
-        {
-          name: 'Florian',
-          familyName: 'Rasoamanana',
-          birthday: new Date(1995, 7, 12),
-        },
-      ],
-    },
-  ];
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (isError) {
+    return <Text>Error fetching user</Text>;
+  }
 
   return (
     <View className="flex-1 items-center justify-center bg-white px-6">
       <StatusBar style="dark" />
       <SectionList
         className="w-full"
-        sections={DATA}
+        sections={data || []}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled
-        keyExtractor={(item, index) => item.name + index}
+        keyExtractor={(item, index) => item.id + index}
         renderItem={({ item }) => (
           <TouchableOpacity
             className="bg-main rounded-xl p-4 w-full mb-2 flex flex-row items-center"
-            onPress={goToProfile}
+            onPress={() =>
+              goToProfile(
+                item.fullName,
+                item.date.toLocaleDateString('fr-fr', {
+                  day: 'numeric',
+                  year: 'numeric',
+                  month: 'long',
+                }),
+              )
+            }
           >
             <View className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
-              <Text className="text-main font-bold">DD</Text>
+              <Text className="text-main font-bold">
+                {item.fullName.split(' ')[0].charAt(0)}
+                {item.fullName.split(' ')[1].charAt(0)}
+              </Text>
             </View>
             <View className="ml-4">
               <View className="flex flex-row gap-1">
-                <Text className="text-dark font-bold">{item.name}</Text>
-                <Text className="text-dark font-bold">{item.familyName}</Text>
+                <Text className="text-dark font-bold">{item.fullName}</Text>
               </View>
               <Text className="text-dark font-medium mt-1">
-                {item.birthday.toLocaleDateString('fr-fr', {
+                {item.date.toLocaleDateString('fr-fr', {
                   day: 'numeric',
                   year: 'numeric',
                   month: 'long',
@@ -121,7 +78,7 @@ export default function TabOneScreen() {
           <View className="bg-white py-2 mb-2 flex flex-row items-center w-full">
             <View className="h-0.5 rounded-full w-24 bg-lightGray flex-1" />
             <Text className="font-heading text-dark ml-4 text-xl">
-              {section.month}
+              {section.title}
             </Text>
           </View>
         )}
