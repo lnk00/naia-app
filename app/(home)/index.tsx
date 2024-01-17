@@ -3,10 +3,16 @@ import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, SectionList, TouchableOpacity } from 'react-native';
 
+import { useSession } from '../../contexts/auth';
+import { useGetBirthdays } from '../../queries/birthday';
+
 export default function TabOneScreen() {
   const router = useRouter();
+  const { session } = useSession();
+  const { data } = useGetBirthdays({ id: session?.user.id || '' });
 
   const goToProfile = () => {
+    console.log('my datas: ', data);
     router.push('/profile');
   };
 
