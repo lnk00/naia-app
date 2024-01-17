@@ -63,6 +63,22 @@ export default function HomeLayout() {
           ),
         }}
       />
+      <Stack.Screen
+        name="addBirthday"
+        options={{
+          presentation: 'modal',
+          headerShadowVisible: false,
+          title: '',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerRight: () => (
+            <TouchableOpacity onPress={goBack} className="p-4">
+              <Fontisto name="close-a" size={16} color="#2A2D32" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Stack>
   );
 }

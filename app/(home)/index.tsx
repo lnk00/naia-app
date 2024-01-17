@@ -1,5 +1,5 @@
 import { Fontisto } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, SectionList, TouchableOpacity } from 'react-native';
 
@@ -9,13 +9,21 @@ import { useGetBirthdays } from '../../queries/birthday';
 export default function TabOneScreen() {
   const router = useRouter();
   const { session } = useSession();
-  const { data, isLoading, isError } = useGetBirthdays({
+  const { data, isLoading, isError, refetch } = useGetBirthdays({
     id: session?.user.id || '',
   });
 
   const goToProfile = (fullName: string, birthday: string) => {
     router.push({ pathname: '/profile', params: { fullName, birthday } });
   };
+
+  const goToAddBirthday = () => {
+    router.push('/(home)/addBirthday');
+  };
+
+  useFocusEffect(() => {
+    refetch();
+  });
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -28,6 +36,12 @@ export default function TabOneScreen() {
   return (
     <View className="flex-1 items-center justify-center bg-white px-6">
       <StatusBar style="dark" />
+      <TouchableOpacity
+        className="absolute bg-dark h-20 w-20 rounded-xl flex items-center justify-center bottom-12 right-6 z-10"
+        onPress={goToAddBirthday}
+      >
+        <Fontisto name="plus-a" size={32} color="#83F9D6" />
+      </TouchableOpacity>
       <SectionList
         className="w-full"
         sections={data || []}

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '../lib/supabase';
 
@@ -17,7 +17,15 @@ type GetBirthdaysQueryParams = {
   id: string;
 };
 
+type InsertBirthdayQueryParams = {
+  user_id: string;
+  name: string;
+  familyName: string;
+  date: Date;
+};
+
 const GET_BIRTHDAYS_QUERY_KEY = ['GetBirthdays'];
+const INSERT_BIRTHDAY_QUERY_KEY = ['InsertBirthday'];
 
 const fetchBirthdays = async (
   params: GetBirthdaysQueryParams,
@@ -57,9 +65,44 @@ const fetchBirthdays = async (
   return groups;
 };
 
+const addBirthday = async (
+  params: InsertBirthdayQueryParams,
+): Promise<Birthday> => {
+  const { data, error } = await supabase
+    .from('birthdays')
+    .insert({
+      full_name: `${params.name} ${params.familyName}`,
+      date: params.date,
+      user_id: params.user_id,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    id: data.id,
+    fullName: data.full_name,
+    date: new Date(data.date),
+  };
+};
+
 export const useGetBirthdays = (params: GetBirthdaysQueryParams) => {
   return useQuery<BirthdayGroup[], Error>({
     queryKey: [GET_BIRTHDAYS_QUERY_KEY, params.id],
     queryFn: () => fetchBirthdays(params),
+  });
+};
+
+export const useInsertBirthday = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<Birthday, Error, InsertBirthdayQueryParams>({
+    mutationKey: INSERT_BIRTHDAY_QUERY_KEY,
+    mutationFn: addBirthday,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: GET_BIRTHDAYS_QUERY_KEY }),
   });
 };
