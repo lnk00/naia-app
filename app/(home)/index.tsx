@@ -1,5 +1,6 @@
 import { Fontisto } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { View, Text, SectionList, TouchableOpacity } from 'react-native';
 
 export default function TabOneScreen() {
@@ -74,6 +75,7 @@ export default function TabOneScreen() {
 
   return (
     <View className="flex-1 items-center justify-center bg-white px-6">
+      <StatusBar style="dark" />
       <SectionList
         className="w-full"
         sections={DATA}

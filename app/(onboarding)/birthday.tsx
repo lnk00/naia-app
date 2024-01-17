@@ -6,12 +6,13 @@ import React, { useState } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, View } from 'react-native';
 
 import { useSession } from '../../contexts/auth';
-import { supabase } from '../../lib/supabase';
+import { useUpdateProfile } from '../../queries/profile';
 
 export default function BirthdayScreen() {
   const params = useLocalSearchParams<{ name: string; familyName: string }>();
   const router = useRouter();
   const { session } = useSession();
+  const { mutateAsync: updateProfile } = useUpdateProfile();
 
   const [date, setDate] = useState(new Date());
 
@@ -25,20 +26,17 @@ export default function BirthdayScreen() {
   };
 
   const onContinue = async () => {
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        updated_at: new Date(),
-        full_name: `${params.name} ${params.familyName}`,
+    try {
+      updateProfile({
+        id: session?.user.id || '',
+        name: params.name,
+        familyName: params.familyName,
         birthday: date,
-      })
-      .eq('id', session?.user.id)
-      .select();
+      });
 
-    console.log('ERROR: ', error);
-
-    if (!error) {
       router.push('/(home)');
+    } catch (error) {
+      console.log(error);
     }
   };
 
