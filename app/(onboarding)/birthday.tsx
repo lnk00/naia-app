@@ -5,9 +5,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Text, SafeAreaView, TouchableOpacity, View } from 'react-native';
 
-export default function NameScreen() {
+import { useSession } from '../../contexts/auth';
+import { supabase } from '../../lib/supabase';
+
+export default function BirthdayScreen() {
   const params = useLocalSearchParams<{ name: string; familyName: string }>();
   const router = useRouter();
+  const { session } = useSession();
+
   const [date, setDate] = useState(new Date());
 
   const onChange = (_: DateTimePickerEvent, selectedDate: Date | undefined) => {
@@ -19,8 +24,22 @@ export default function NameScreen() {
     console.log('BIRTHDAY: ', date);
   };
 
-  const onContinue = () => {
-    router.push('/family');
+  const onContinue = async () => {
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        updated_at: new Date(),
+        full_name: `${params.name} ${params.familyName}`,
+        birthday: date,
+      })
+      .eq('id', session?.user.id)
+      .select();
+
+    console.log('ERROR: ', error);
+
+    if (!error) {
+      router.push('/(home)');
+    }
   };
 
   return (
