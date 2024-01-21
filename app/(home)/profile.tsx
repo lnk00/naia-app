@@ -33,7 +33,7 @@ export default function ModalScreen() {
           className="flex flex-row gap-2 items-center justify-center p-4 bg-main rounded-xl w-full"
           onPress={sendMessage}
         >
-          <Text className="text-dark font-semibold">Editer</Text>
+          <Text className="text-dark font-semibold">Désactiver le rappel</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
