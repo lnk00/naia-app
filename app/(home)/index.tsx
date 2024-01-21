@@ -50,7 +50,7 @@ export default function TabOneScreen() {
         keyExtractor={(item, index) => item.id + index}
         renderItem={({ item }) => (
           <TouchableOpacity
-            className="bg-main rounded-xl p-4 w-full mb-2 flex flex-row items-center"
+            className="bg-white rounded-xl p-4 w-full flex flex-row items-center"
             onPress={() =>
               goToProfile(
                 item.fullName,
@@ -62,8 +62,8 @@ export default function TabOneScreen() {
               )
             }
           >
-            <View className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
-              <Text className="text-main font-bold">
+            <View className="h-12 w-12 bg-lightGray rounded-xl flex items-center justify-center">
+              <Text className="text-dark font-bold">
                 {item.fullName.split(' ')[0].charAt(0)}
                 {item.fullName.split(' ')[1].charAt(0)}
               </Text>
