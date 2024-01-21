@@ -31,7 +31,7 @@ export default function TabOneScreen() {
   return (
     <View className="flex-1 items-center justify-center bg-white px-6">
       <SectionList
-        className="w-full"
+        className="w-ful mt-4"
         sections={data || []}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled
@@ -81,6 +81,13 @@ export default function TabOneScreen() {
             <View className="h-0.5 rounded-full w-24 bg-lightGray flex-1" />
             <Text className="font-heading text-dark ml-4 text-xl">
               {section.title}
+            </Text>
+          </View>
+        )}
+        ListHeaderComponent={() => (
+          <View className="h-72">
+            <Text className="font-heading text-dark text-2xl">
+              Les anniversaires à venir.
             </Text>
           </View>
         )}
