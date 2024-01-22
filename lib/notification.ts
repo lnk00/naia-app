@@ -27,7 +27,6 @@ export async function registerForPushNotificationsAsync() {
       alert('Failed to get push token for push notification!');
       return;
     }
-    console.log('EXPO CONFIG: ', Constants.expoConfig);
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig?.extra?.eas.projectId,
     });

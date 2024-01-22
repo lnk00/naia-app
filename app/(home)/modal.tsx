@@ -1,5 +1,4 @@
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 
 import { useSession } from '../../contexts/auth';
@@ -17,10 +16,6 @@ export default function ModalScreen() {
     await signOut();
     router.replace('/(auth)');
   };
-
-  useEffect(() => {
-    console.log(data);
-  });
 
   if (isLoading) {
     return <Text>Loading...</Text>;

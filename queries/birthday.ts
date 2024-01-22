@@ -71,7 +71,6 @@ const addBirthday = async (
 ): Promise<Birthday> => {
   const normalized_date = new Date(params.date.getTime());
   normalized_date.setFullYear(2000);
-  console.log(normalized_date);
   const { data, error } = await supabase
     .from('birthdays')
     .insert({

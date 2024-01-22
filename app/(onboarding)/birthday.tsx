@@ -20,9 +20,6 @@ export default function BirthdayScreen() {
     if (selectedDate) {
       setDate(selectedDate);
     }
-    console.log('NAME: ', params.name);
-    console.log('FAMILY NAME: ', params.familyName);
-    console.log('BIRTHDAY: ', date);
   };
 
   const onContinue = async () => {
