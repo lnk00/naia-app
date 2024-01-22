@@ -33,7 +33,8 @@ const fetchBirthdays = async (
   const { data } = await supabase
     .from('birthdays')
     .select()
-    .eq('user_id', params.id);
+    .eq('user_id', params.id)
+    .order('normalized_date');
 
   const groups: BirthdayGroup[] = [];
 
@@ -68,11 +69,15 @@ const fetchBirthdays = async (
 const addBirthday = async (
   params: InsertBirthdayQueryParams,
 ): Promise<Birthday> => {
+  const normalized_date = new Date(params.date.getTime());
+  normalized_date.setFullYear(2000);
+  console.log(normalized_date);
   const { data, error } = await supabase
     .from('birthdays')
     .insert({
       full_name: `${params.name} ${params.familyName}`,
       date: params.date,
+      normalized_date,
       user_id: params.user_id,
     })
     .select()
