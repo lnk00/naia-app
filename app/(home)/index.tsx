@@ -1,7 +1,14 @@
 import { Fontisto } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { View, Text, SectionList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  SectionList,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 
+import abstract1 from '../../assets/images/abstract1.png';
 import { useSession } from '../../contexts/auth';
 import { useGetBirthdays } from '../../queries/birthday';
 
@@ -84,14 +91,36 @@ export default function TabOneScreen() {
             </Text>
           </View>
         )}
-        ListHeaderComponent={() => (
-          <View className="h-72">
-            <Text className="font-heading text-dark text-2xl">
-              Les anniversaires à venir.
-            </Text>
-          </View>
-        )}
+        ListHeaderComponent={HeaderList}
       />
+    </View>
+  );
+}
+
+function HeaderList() {
+  return (
+    <View>
+      <Text className="font-heading text-dark text-2xl">
+        Les anniversaires à venir.
+      </Text>
+      <View className="flex mt-2">
+        <View className="rounded-xl self-start overflow-hidden">
+          <ImageBackground source={abstract1} className="flex gap-6 p-6">
+            <Text className="font-heading text-white text-2xl">
+              Dans 12 jours
+            </Text>
+            <View className="flex flex-row items-center gap-4">
+              <View className="h-16 w-16 bg-white rounded-xl flex items-center justify-center">
+                <Text className="text-dark text-lg font-bold">DD</Text>
+              </View>
+              <View className="flex">
+                <Text className="text-white text-2xl font-bold">Damien</Text>
+                <Text className="text-white text-2xl font-bold">Dumontet</Text>
+              </View>
+            </View>
+          </ImageBackground>
+        </View>
+      </View>
     </View>
   );
 }
