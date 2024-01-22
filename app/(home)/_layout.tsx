@@ -28,7 +28,7 @@ export default function HomeLayout() {
             backgroundColor: '#fff',
           },
           headerLeft: () => (
-            <TouchableOpacity onPress={goToProfile} className="ml-4">
+            <TouchableOpacity onPress={goToProfile}>
               <View className="h-12 w-12 bg-main rounded-full flex items-center justify-center">
                 <Text className="font-medium text-dark">DD</Text>
               </View>
