@@ -1,6 +1,8 @@
 import { Fontisto } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import {
   View,
   Text,
@@ -17,6 +19,7 @@ import { useGetBirthdays } from '../../queries/birthday';
 export default function TabOneScreen() {
   const router = useRouter();
   const { session } = useSession();
+  const isFocused = useIsFocused();
   const { data, isLoading, isError, refetch } = useGetBirthdays({
     id: session?.user.id || '',
   });
@@ -25,9 +28,9 @@ export default function TabOneScreen() {
     router.push({ pathname: '/profile', params: { fullName, birthday } });
   };
 
-  useFocusEffect(() => {
-    refetch();
-  });
+  useEffect(() => {
+    isFocused && refetch();
+  }, [isFocused]);
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -55,6 +58,7 @@ export default function TabOneScreen() {
                   day: 'numeric',
                   year: 'numeric',
                   month: 'long',
+                  timeZone: 'UTC',
                 }),
               )
             }

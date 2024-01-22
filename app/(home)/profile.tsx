@@ -22,9 +22,8 @@ export default function ModalScreen() {
         <Text className="font-heading text-5xl text-dark">
           {params.fullName.split(' ')[1]}
         </Text>
-        <View className="flex flex-row gap-2 ">
-          <Text className="font-bold text-4xl text-dark mt-4">Né le,</Text>
-          <Text className="font-bold font-heading text-4xl text-main mt-4">
+        <View className="flex flex-row">
+          <Text className="font-bold font-heading text-4xl text-main mt-4 shrink">
             {params.birthday}
           </Text>
         </View>
