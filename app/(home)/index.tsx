@@ -1,4 +1,5 @@
 import { Fontisto } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { useFocusEffect, useRouter } from 'expo-router';
 import {
   View,
@@ -6,9 +7,10 @@ import {
   SectionList,
   TouchableOpacity,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 
-import abstract1 from '../../assets/images/abstract1.png';
+import abstract2 from '../../assets/images/abstract2.png';
 import { useSession } from '../../contexts/auth';
 import { useGetBirthdays } from '../../queries/birthday';
 
@@ -36,7 +38,7 @@ export default function TabOneScreen() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-white px-6">
+    <View className="flex-1 items-center justify-center bg-white">
       <SectionList
         className="w-ful mt-4"
         sections={data || []}
@@ -45,7 +47,7 @@ export default function TabOneScreen() {
         keyExtractor={(item, index) => item.id + index}
         renderItem={({ item }) => (
           <TouchableOpacity
-            className="bg-white rounded-xl p-4 w-full flex flex-row items-center"
+            className="bg-white rounded-xl p-4 w-full flex flex-row items-center px-6"
             onPress={() =>
               goToProfile(
                 item.fullName,
@@ -84,7 +86,7 @@ export default function TabOneScreen() {
           </TouchableOpacity>
         )}
         renderSectionHeader={({ section }) => (
-          <View className="bg-white py-2 mb-2 flex flex-row items-center w-full">
+          <View className="bg-white py-2 mb-2 flex flex-row items-center w-full px-6">
             <View className="h-0.5 rounded-full w-24 bg-lightGray flex-1" />
             <Text className="font-heading text-dark ml-4 text-xl">
               {section.title}
@@ -100,27 +102,63 @@ export default function TabOneScreen() {
 function HeaderList() {
   return (
     <View>
-      <Text className="font-heading text-dark text-2xl">
+      <Text className="font-heading text-dark text-2xl px-6">
         Les anniversaires à venir.
       </Text>
-      <View className="flex mt-2">
-        <View className="rounded-xl self-start overflow-hidden">
-          <ImageBackground source={abstract1} className="flex gap-6 p-6">
-            <Text className="font-heading text-white text-2xl">
-              Dans 12 jours
-            </Text>
-            <View className="flex flex-row items-center gap-4">
-              <View className="h-16 w-16 bg-white rounded-xl flex items-center justify-center">
-                <Text className="text-dark text-lg font-bold">DD</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className="my-6"
+      >
+        <View className="rounded-xl self-start overflow-hidden ml-6">
+          <ImageBackground source={abstract2}>
+            <BlurView intensity={40} tint="dark">
+              <View className="flex gap-6 p-6">
+                <Text className="font-heading text-white text-2xl">
+                  Dans 12 jours
+                </Text>
+                <View className="flex flex-row items-center gap-4">
+                  <View className="h-16 w-16 bg-white rounded-xl flex items-center justify-center">
+                    <Text className="text-dark text-lg font-bold">FL</Text>
+                  </View>
+                  <View className="flex">
+                    <Text className="text-white text-2xl font-bold">
+                      Florian
+                    </Text>
+                    <Text className="text-white text-2xl font-bold">
+                      Rasoamanana
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View className="flex">
-                <Text className="text-white text-2xl font-bold">Damien</Text>
-                <Text className="text-white text-2xl font-bold">Dumontet</Text>
-              </View>
-            </View>
+            </BlurView>
           </ImageBackground>
         </View>
-      </View>
+        <View className="rounded-xl self-start overflow-hidden ml-6">
+          <ImageBackground source={abstract2}>
+            <BlurView intensity={40} tint="dark">
+              <View className="flex gap-6 p-6">
+                <Text className="font-heading text-white text-2xl">
+                  Dans 12 jours
+                </Text>
+                <View className="flex flex-row items-center gap-4">
+                  <View className="h-16 w-16 bg-white rounded-xl flex items-center justify-center">
+                    <Text className="text-dark text-lg font-bold">DD</Text>
+                  </View>
+                  <View className="flex">
+                    <Text className="text-white text-2xl font-bold">
+                      Damien
+                    </Text>
+                    <Text className="text-white text-2xl font-bold">
+                      Dumontet
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </BlurView>
+          </ImageBackground>
+        </View>
+      </ScrollView>
     </View>
   );
 }
