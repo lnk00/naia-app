@@ -1,11 +1,16 @@
 /* eslint-disable indent */
 import { AuthChangeEvent, AuthError, Session } from '@supabase/supabase-js';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext<{
   signInWithOtp: (email: string) => Promise<{ error: AuthError | null }>;
+  signInWithApple: () => Promise<{
+    error: AuthError | null;
+    isUserNew: boolean;
+  }>;
   verifyOtp: (
     email: string,
     token: string,
@@ -15,6 +20,7 @@ const AuthContext = createContext<{
   session: Session | null;
 }>({
   signInWithOtp: async () => ({ error: null }),
+  signInWithApple: async () => ({ error: null, isUserNew: false }),
   verifyOtp: async () => ({ error: null, isUserNew: false }),
   signOut: async () => ({ error: null }),
   fetchSession: async () => null,
@@ -39,6 +45,29 @@ export function SessionProvider(props: React.PropsWithChildren) {
     return supabase.auth.signInWithOtp({ email }).then(({ error }) => {
       return { error };
     });
+  };
+
+  const signInWithApple = async () => {
+    const credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+      ],
+    });
+    const { data, error } = await supabase.auth.signInWithIdToken({
+      provider: 'apple',
+      token: credential.identityToken || '',
+    });
+
+    setSession(data.session);
+
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select()
+      .eq('id', data.session?.user.id)
+      .single();
+
+    return { error, isUserNew: !profileData.updated_at };
   };
 
   const verifyOtp = async (email: string, token: string) => {
@@ -102,6 +131,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     <AuthContext.Provider
       value={{
         signInWithOtp,
+        signInWithApple,
         verifyOtp,
         signOut,
         fetchSession,
