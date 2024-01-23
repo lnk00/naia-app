@@ -98,16 +98,12 @@ export const useGetBirthdaysGroup = (params: GetBirthdaysQueryParams) => {
 
     data?.forEach((bday) => {
       const groupExist = groups.find(
-        (group) =>
-          group.title ===
-          new Date(bday.date).toLocaleDateString('fr-fr', { month: 'long' }),
+        (group) => group.title === dayjs(bday.date).utc().format('MMMM'),
       );
 
       if (!groupExist) {
         groups.push({
-          title: new Date(bday.date).toLocaleDateString('fr-fr', {
-            month: 'long',
-          }),
+          title: dayjs(bday.date).utc().format('MMMM'),
           data: [
             {
               id: bday.id,
