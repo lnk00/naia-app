@@ -17,15 +17,18 @@ import abstract from '../../assets/images/abstract3.png';
 import { useSession } from '../../contexts/auth';
 import {
   Birthday,
-  BirthdayGroup,
-  useGetBirthdays,
+  useGetBirthdaysGroup,
+  useGetUpcommingBirthdays,
 } from '../../queries/birthday';
 
 export default function TabOneScreen() {
   const router = useRouter();
   const { session } = useSession();
   const isFocused = useIsFocused();
-  const { data, isLoading, isError, refetch } = useGetBirthdays({
+  const { data, isLoading, isError, refetch } = useGetBirthdaysGroup({
+    id: session?.user.id || '',
+  });
+  const { data: upcomminBirthdays } = useGetUpcommingBirthdays({
     id: session?.user.id || '',
   });
 
@@ -93,33 +96,14 @@ export default function TabOneScreen() {
             </Text>
           </View>
         )}
-        ListHeaderComponent={() => HeaderList(data)}
+        ListHeaderComponent={() => HeaderList(upcomminBirthdays)}
       />
     </View>
   );
 }
 
-function HeaderList(birthdays: BirthdayGroup[] | undefined) {
+function HeaderList(bdays?: Birthday[]) {
   const normalizedCurrentDate = dayjs().year(2000);
-
-  const getUpcomingBirthdays = () => {
-    if (!birthdays) return [];
-    const reduced = birthdays.reduce((acc, bdayGroup) => {
-      return acc.concat(bdayGroup.data);
-    }, [] as Birthday[]);
-
-    const upcomming = reduced
-      .filter((bday) => {
-        const normalizedBday = dayjs(bday.date).year(2000);
-        return normalizedBday.isAfter(normalizedCurrentDate);
-      })
-      .slice(0, 3);
-
-    upcomming.concat(reduced.slice(0, 3 - upcomming.length));
-
-    console.log(upcomming);
-    return upcomming;
-  };
   return (
     <View>
       <Text className="font-heading text-dark text-2xl px-6">
@@ -130,7 +114,7 @@ function HeaderList(birthdays: BirthdayGroup[] | undefined) {
         showsHorizontalScrollIndicator={false}
         className="my-6"
       >
-        {getUpcomingBirthdays().map((bday, i) => (
+        {bdays?.map((bday, i) => (
           <View key={i} className="rounded-xl self-start overflow-hidden ml-6">
             <ImageBackground source={abstract}>
               <BlurView intensity={20} tint="dark">
