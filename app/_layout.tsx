@@ -1,6 +1,9 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import fr from 'dayjs/locale/fr';
+import utc from 'dayjs/plugin/utc';
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
 import { SplashScreen, Stack, router, useRootNavigation } from 'expo-router';
@@ -23,6 +26,8 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  dayjs.locale(fr);
+  dayjs.extend(utc);
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     Mackinac: require('../assets/fonts/Mackinac.otf'),

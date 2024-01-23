@@ -2,12 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '../lib/supabase';
 
-type BirthdayGroup = {
+export type BirthdayGroup = {
   title: string;
   data: Birthday[];
 };
 
-type Birthday = {
+export type Birthday = {
   id: string;
   fullName: string;
   date: Date;
