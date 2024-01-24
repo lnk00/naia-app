@@ -2,6 +2,7 @@ import { Fontisto } from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
+import { useAtom } from 'jotai';
 import {
   View,
   Text,
@@ -13,6 +14,7 @@ import {
 
 import abstract from '../../assets/images/abstract3.png';
 import { useSession } from '../../contexts/auth';
+import { selectedBirthdayAtom } from '../../lib/store';
 import {
   Birthday,
   useGetBirthdaysGroup,
@@ -22,6 +24,7 @@ import {
 export default function TabOneScreen() {
   const router = useRouter();
   const { session } = useSession();
+  const [, setSelectedBirthday] = useAtom(selectedBirthdayAtom);
   const { data, isLoading, isError } = useGetBirthdaysGroup({
     userId: session?.user.id,
   });
@@ -29,8 +32,9 @@ export default function TabOneScreen() {
     userId: session?.user.id,
   });
 
-  const goToProfile = (fullName: string, birthday: string, id: string) => {
-    router.push({ pathname: '/profile', params: { fullName, birthday, id } });
+  const goToProfile = (bday: Birthday) => {
+    setSelectedBirthday(bday);
+    router.push('/profile');
   };
 
   if (isLoading) {
@@ -52,13 +56,7 @@ export default function TabOneScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             className="bg-white rounded-xl p-4 w-full flex flex-row items-center px-6"
-            onPress={() =>
-              goToProfile(
-                item.fullName,
-                dayjs(item.date).utc().format('DD MMMM YYYY'),
-                item.id,
-              )
-            }
+            onPress={() => goToProfile(item)}
           >
             <View className="h-12 w-12 bg-lightGray rounded-xl flex items-center justify-center">
               <Text className="text-dark font-bold">

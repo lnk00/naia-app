@@ -33,10 +33,7 @@ type InsertBirthdayQueryParams = {
 };
 
 type UpdateBirthdayQueryParams = {
-  updatedBirthday: Pick<
-    Birthday,
-    'id' | 'isReminderActivated' | 'isGiftIdeaSet'
-  >;
+  updatedBirthday: Birthday;
 };
 
 const GET_BIRTHDAYS_QUERY_KEY = ['GetBirthdays'];

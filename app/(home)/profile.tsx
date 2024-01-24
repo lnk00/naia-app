@@ -1,5 +1,7 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { Fontisto } from '@expo/vector-icons';
+import { router, useNavigation } from 'expo-router';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,59 +10,60 @@ import {
   Switch,
 } from 'react-native';
 
+import { selectedBirthdayAtom } from '../../lib/store';
 import { useDeleteBirthday, useUpdateBirthday } from '../../queries/birthday';
 
 export default function ProfileScreen() {
+  const [selectedBirthday, setSelectedBirthday] = useAtom(selectedBirthdayAtom);
+  const navigation = useNavigation();
   const { mutateAsync: deleteBirthday } = useDeleteBirthday();
   const { mutateAsync: updateBirthday } = useUpdateBirthday();
-  const params = useLocalSearchParams<{
-    fullName: string;
-    birthday: string;
-    id: string;
-  }>();
-
-  const [isEnabled, setIsEnabled] = useState(true);
 
   useEffect(() => {
-    return () => {
-      updateBirthday({
-        updatedBirthday: {
-          id: params.id,
-          isReminderActivated: isEnabled,
-          isGiftIdeaSet: false,
-        },
-      });
-    };
-  }, []);
+    const unsub = navigation.addListener('beforeRemove', () => {
+      updateBirthday({ updatedBirthday: selectedBirthday });
+    });
+    return unsub;
+  }, [navigation, selectedBirthday]);
 
   const toggleSwitch = () => {
-    setIsEnabled(!isEnabled);
+    setSelectedBirthday((prev) => ({
+      ...prev,
+      isReminderActivated: !prev?.isReminderActivated,
+    }));
   };
 
   const onDelete = async () => {
     try {
-      await deleteBirthday({ id: params.id });
+      await deleteBirthday({ id: selectedBirthday.id });
       router.back();
     } catch (error) {
       console.log(error);
     }
   };
 
+  const goBack = async () => {
+    router.back();
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
+      <TouchableOpacity onPress={goBack} className="p-6">
+        <Fontisto name="angle-left" size={16} color="#2A2D32" />
+      </TouchableOpacity>
       <View className="px-6 flex-1 items-center">
         <View className="h-24 w-24 bg-lightGray rounded-xl flex items-center justify-center mt-4">
           <Text className="font-bold text-2xl text-dark">
-            {params.fullName.split(' ')[0].charAt(0)}
-            {params.fullName.split(' ')[1].charAt(0)}
+            {selectedBirthday.fullName.split(' ')[0].charAt(0)}
+            {selectedBirthday.fullName.split(' ')[1].charAt(0)}
           </Text>
         </View>
         <Text className="text-3xl font-bold text-dark mt-6">
-          {params.fullName}
+          {selectedBirthday.fullName}
         </Text>
         <View className="flex flex-row">
           <Text className="font-bold font-heading text-3xl text-main mt-1 shrink">
-            {params.birthday}
+            {selectedBirthday.date.toDateString()}
           </Text>
         </View>
         <View className="bg-lightGray rounded-xl p-4 mt-6 w-full">
@@ -92,7 +95,7 @@ export default function ProfileScreen() {
             thumbColor="#ffffff"
             ios_backgroundColor="#EFF1F6"
             onValueChange={toggleSwitch}
-            value={isEnabled}
+            value={selectedBirthday.isReminderActivated}
           />
         </View>
         <View className="flex-1" />
