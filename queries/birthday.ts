@@ -13,6 +13,8 @@ export type Birthday = {
   fullName: string;
   date: Date;
   normalizedDate: Date;
+  isReminderActivated: boolean;
+  isGiftIdeaSet: boolean;
 };
 
 type GetBirthdaysQueryParams = {
@@ -51,6 +53,8 @@ const fetchBirthdays = async (
       fullName: bday.full_name,
       date: new Date(bday.date),
       normalizedDate: new Date(bday.normalized_date),
+      isReminderActivated: bday.is_reminder_activated,
+      isGiftIdeaSet: bday.is_gift_idea_set,
     });
   });
 
@@ -82,6 +86,8 @@ const addBirthday = async (
     fullName: data.full_name,
     date: new Date(data.date),
     normalizedDate: new Date(data.normalized_date),
+    isReminderActivated: data.is_reminder_activated,
+    isGiftIdeaSet: data.is_gift_idea_set,
   };
 };
 
@@ -128,6 +134,8 @@ export const useGetBirthdaysGroup = (params: GetBirthdaysQueryParams) => {
               fullName: bday.fullName,
               date: new Date(bday.date),
               normalizedDate: new Date(bday.normalizedDate),
+              isReminderActivated: bday.isReminderActivated,
+              isGiftIdeaSet: bday.isGiftIdeaSet,
             },
           ],
         });
@@ -137,6 +145,8 @@ export const useGetBirthdaysGroup = (params: GetBirthdaysQueryParams) => {
           fullName: bday.fullName,
           date: new Date(bday.date),
           normalizedDate: new Date(bday.normalizedDate),
+          isReminderActivated: bday.isReminderActivated,
+          isGiftIdeaSet: bday.isGiftIdeaSet,
         });
       }
     });
