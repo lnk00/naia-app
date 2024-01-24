@@ -14,11 +14,11 @@ export type Birthday = {
   date: Date;
   normalizedDate: Date;
   isReminderActivated: boolean;
-  isGiftIdeaSet: boolean;
+  isGiftIdeaSet?: boolean;
 };
 
 type GetBirthdaysQueryParams = {
-  id: string;
+  userId?: string;
 };
 
 type DeleteBirthdayQueryParams = {
@@ -32,17 +32,26 @@ type InsertBirthdayQueryParams = {
   date: Date;
 };
 
+type UpdateBirthdayQueryParams = {
+  updatedBirthday: Pick<
+    Birthday,
+    'id' | 'isReminderActivated' | 'isGiftIdeaSet'
+  >;
+};
+
 const GET_BIRTHDAYS_QUERY_KEY = ['GetBirthdays'];
 const INSERT_BIRTHDAY_QUERY_KEY = ['InsertBirthday'];
 const DELETE_BIRTHDAY_QUERY_KEY = ['DeleteBirthday'];
+const UPDATE_BIRTHDAY_QUERY_KEY = ['UpdateBirthday'];
 
 const fetchBirthdays = async (
   params: GetBirthdaysQueryParams,
 ): Promise<Birthday[]> => {
+  if (!params.userId) return [];
   const { data } = await supabase
     .from('birthdays')
     .select()
-    .eq('user_id', params.id)
+    .eq('user_id', params.userId)
     .order('normalized_date');
 
   const bdays: Birthday[] = [];
@@ -104,13 +113,29 @@ const deleteBirthday = async (
   }
 };
 
+const updateBirthday = async (
+  params: UpdateBirthdayQueryParams,
+): Promise<void> => {
+  const { error } = await supabase
+    .from('birthdays')
+    .update({
+      is_reminder_activated: params.updatedBirthday.isReminderActivated,
+      is_gift_idea_set: params.updatedBirthday.isGiftIdeaSet,
+    })
+    .eq('id', params.updatedBirthday.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
 // eslint-disable-next-line prettier/prettier
 export const useGetBirthdays = <TData = Birthday[],>(
   params: GetBirthdaysQueryParams,
   select?: (data: Birthday[]) => TData,
 ) => {
   return useQuery<Birthday[], Error, TData>({
-    queryKey: [GET_BIRTHDAYS_QUERY_KEY, params.id],
+    queryKey: [GET_BIRTHDAYS_QUERY_KEY, params.userId],
     queryFn: () => fetchBirthdays(params),
     select,
   });
@@ -177,7 +202,7 @@ export const useInsertBirthday = () => {
     mutationKey: INSERT_BIRTHDAY_QUERY_KEY,
     mutationFn: addBirthday,
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: GET_BIRTHDAYS_QUERY_KEY }),
+      queryClient.invalidateQueries({ queryKey: [GET_BIRTHDAYS_QUERY_KEY] }),
   });
 };
 
@@ -188,6 +213,17 @@ export const useDeleteBirthday = () => {
     mutationKey: DELETE_BIRTHDAY_QUERY_KEY,
     mutationFn: deleteBirthday,
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: GET_BIRTHDAYS_QUERY_KEY }),
+      queryClient.invalidateQueries({ queryKey: [GET_BIRTHDAYS_QUERY_KEY] }),
+  });
+};
+
+export const useUpdateBirthday = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, UpdateBirthdayQueryParams>({
+    mutationKey: UPDATE_BIRTHDAY_QUERY_KEY,
+    mutationFn: updateBirthday,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [GET_BIRTHDAYS_QUERY_KEY] }),
   });
 };

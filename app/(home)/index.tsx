@@ -1,9 +1,7 @@
 import { Fontisto } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
 import {
   View,
   Text,
@@ -24,21 +22,16 @@ import {
 export default function TabOneScreen() {
   const router = useRouter();
   const { session } = useSession();
-  const isFocused = useIsFocused();
-  const { data, isLoading, isError, refetch } = useGetBirthdaysGroup({
-    id: session?.user.id || '',
+  const { data, isLoading, isError } = useGetBirthdaysGroup({
+    userId: session?.user.id,
   });
   const { data: upcomminBirthdays } = useGetUpcommingBirthdays({
-    id: session?.user.id || '',
+    userId: session?.user.id,
   });
 
   const goToProfile = (fullName: string, birthday: string, id: string) => {
     router.push({ pathname: '/profile', params: { fullName, birthday, id } });
   };
-
-  useEffect(() => {
-    isFocused && refetch();
-  }, [isFocused]);
 
   if (isLoading) {
     return <Text>Loading...</Text>;

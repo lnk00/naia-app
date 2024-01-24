@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,11 @@ import {
   Switch,
 } from 'react-native';
 
-import { useDeleteBirthday } from '../../queries/birthday';
+import { useDeleteBirthday, useUpdateBirthday } from '../../queries/birthday';
 
-export default function ModalScreen() {
+export default function ProfileScreen() {
   const { mutateAsync: deleteBirthday } = useDeleteBirthday();
+  const { mutateAsync: updateBirthday } = useUpdateBirthday();
   const params = useLocalSearchParams<{
     fullName: string;
     birthday: string;
@@ -19,6 +20,18 @@ export default function ModalScreen() {
   }>();
 
   const [isEnabled, setIsEnabled] = useState(true);
+
+  useEffect(() => {
+    return () => {
+      updateBirthday({
+        updatedBirthday: {
+          id: params.id,
+          isReminderActivated: isEnabled,
+          isGiftIdeaSet: false,
+        },
+      });
+    };
+  }, []);
 
   const toggleSwitch = () => {
     setIsEnabled(!isEnabled);
