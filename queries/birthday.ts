@@ -19,6 +19,10 @@ type GetBirthdaysQueryParams = {
   id: string;
 };
 
+type DeleteBirthdayQueryParams = {
+  id: string;
+};
+
 type InsertBirthdayQueryParams = {
   user_id: string;
   name: string;
@@ -28,6 +32,7 @@ type InsertBirthdayQueryParams = {
 
 const GET_BIRTHDAYS_QUERY_KEY = ['GetBirthdays'];
 const INSERT_BIRTHDAY_QUERY_KEY = ['InsertBirthday'];
+const DELETE_BIRTHDAY_QUERY_KEY = ['DeleteBirthday'];
 
 const fetchBirthdays = async (
   params: GetBirthdaysQueryParams,
@@ -78,6 +83,19 @@ const addBirthday = async (
     date: new Date(data.date),
     normalizedDate: new Date(data.normalized_date),
   };
+};
+
+const deleteBirthday = async (
+  params: DeleteBirthdayQueryParams,
+): Promise<void> => {
+  const { error } = await supabase
+    .from('birthdays')
+    .delete()
+    .eq('id', params.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
 };
 
 // eslint-disable-next-line prettier/prettier
@@ -148,6 +166,17 @@ export const useInsertBirthday = () => {
   return useMutation<Birthday, Error, InsertBirthdayQueryParams>({
     mutationKey: INSERT_BIRTHDAY_QUERY_KEY,
     mutationFn: addBirthday,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: GET_BIRTHDAYS_QUERY_KEY }),
+  });
+};
+
+export const useDeleteBirthday = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, DeleteBirthdayQueryParams>({
+    mutationKey: DELETE_BIRTHDAY_QUERY_KEY,
+    mutationFn: deleteBirthday,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: GET_BIRTHDAYS_QUERY_KEY }),
   });

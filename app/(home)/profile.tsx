@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import {
   View,
@@ -8,12 +8,29 @@ import {
   Switch,
 } from 'react-native';
 
+import { useDeleteBirthday } from '../../queries/birthday';
+
 export default function ModalScreen() {
-  const params = useLocalSearchParams<{ fullName: string; birthday: string }>();
+  const { mutateAsync: deleteBirthday } = useDeleteBirthday();
+  const params = useLocalSearchParams<{
+    fullName: string;
+    birthday: string;
+    id: string;
+  }>();
+
   const [isEnabled, setIsEnabled] = useState(true);
 
   const toggleSwitch = () => {
     setIsEnabled(!isEnabled);
+  };
+
+  const onDelete = async () => {
+    try {
+      await deleteBirthday({ id: params.id });
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -68,7 +85,7 @@ export default function ModalScreen() {
         <View className="flex-1" />
         <TouchableOpacity
           className="flex flex-row items-center justify-center p-4 bg-white rounded-xl w-full"
-          onPress={() => {}}
+          onPress={onDelete}
         >
           <Text className="text-red-400 text-xl font-semibold">Supprimer</Text>
         </TouchableOpacity>

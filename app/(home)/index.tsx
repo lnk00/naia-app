@@ -32,8 +32,8 @@ export default function TabOneScreen() {
     id: session?.user.id || '',
   });
 
-  const goToProfile = (fullName: string, birthday: string) => {
-    router.push({ pathname: '/profile', params: { fullName, birthday } });
+  const goToProfile = (fullName: string, birthday: string, id: string) => {
+    router.push({ pathname: '/profile', params: { fullName, birthday, id } });
   };
 
   useEffect(() => {
@@ -63,6 +63,7 @@ export default function TabOneScreen() {
               goToProfile(
                 item.fullName,
                 dayjs(item.date).utc().format('DD MMMM YYYY'),
+                item.id,
               )
             }
           >
