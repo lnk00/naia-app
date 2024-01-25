@@ -47,6 +47,13 @@ export default function ProfileScreen() {
     router.back();
   };
 
+  const setGift = (value: boolean) => {
+    setSelectedBirthday((prev) => ({
+      ...prev,
+      isGiftIdeaSet: value,
+    }));
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <TouchableOpacity onPress={goBack} className="p-6">
@@ -73,14 +80,24 @@ export default function ProfileScreen() {
           </Text>
           <View className="flex flex-row gap-2 mt-2">
             <TouchableOpacity
-              className="flex flex-row items-center justify-center p-2 bg-white rounded-xl flex-1"
-              onPress={() => {}}
+              className={
+                'flex flex-row items-center justify-center p-2 rounded-xl flex-1 ' +
+                (selectedBirthday.isGiftIdeaSet === true
+                  ? ' bg-main'
+                  : 'bg-white')
+              }
+              onPress={() => setGift(true)}
             >
               <Text className="text-dark text-lg font-semibold">Oui !</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              className="flex flex-row items-center justify-center p-2 bg-white rounded-xl flex-1"
-              onPress={() => {}}
+              className={
+                'flex flex-row items-center justify-center p-2 rounded-xl flex-1 ' +
+                (selectedBirthday.isGiftIdeaSet === false
+                  ? 'bg-main'
+                  : 'bg-white')
+              }
+              onPress={() => setGift(false)}
             >
               <Text className="text-dark text-lg font-semibold">
                 Pas encore
