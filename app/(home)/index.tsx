@@ -50,6 +50,7 @@ export default function TabOneScreen() {
       <SectionList
         className="w-ful mt-4"
         sections={data || []}
+        contentContainerStyle={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled
         keyExtractor={(item, index) => item.id + index}
@@ -89,13 +90,38 @@ export default function TabOneScreen() {
           </View>
         )}
         ListHeaderComponent={() => HeaderList(upcomminBirthdays)}
+        ListEmptyComponent={EmptyComponent}
       />
+    </View>
+  );
+}
+
+function EmptyComponent() {
+  const router = useRouter();
+
+  return (
+    <View className="flex items-center justify-center flex-1 w-screen px-6">
+      <View className="bg-lightGray rounded-xl p-4 mt-6 w-full">
+        <Text className="font-medium text-lg">
+          Tu n’as pas encore ajouté d’anniversaire, clique sur le bouton pour en
+          ajouter et ne pas oublier de le souhaiter.
+        </Text>
+        <View className="flex flex-row gap-2 mt-4">
+          <TouchableOpacity
+            className="flex flex-row gap-2 items-center justify-center p-4 rounded-xl w-full bg-main"
+            onPress={() => router.push('/(home)/addBirthday')}
+          >
+            <Text className="text-dark font-semibold">Ajouter</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
 
 function HeaderList(bdays?: Birthday[]) {
   const normalizedCurrentDate = dayjs().year(2000);
+  if (bdays?.length === 0) return;
   return (
     <View>
       <Text className="font-heading text-dark text-2xl px-6">
