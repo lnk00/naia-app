@@ -1,4 +1,5 @@
 import { Fontisto } from '@expo/vector-icons';
+import dayjs from 'dayjs';
 import { router, useNavigation } from 'expo-router';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
@@ -63,7 +64,7 @@ export default function ProfileScreen() {
         </Text>
         <View className="flex flex-row">
           <Text className="font-bold font-heading text-3xl text-main mt-1 shrink">
-            {selectedBirthday.date.toDateString()}
+            {dayjs(selectedBirthday.date).utc().format('DD MMMM YYYY')}
           </Text>
         </View>
         <View className="bg-lightGray rounded-xl p-4 mt-6 w-full">

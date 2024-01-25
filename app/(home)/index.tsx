@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-import abstract from '../../assets/images/abstract3.png';
+import abstract from '../../assets/images/abstract2.png';
 import { useSession } from '../../contexts/auth';
 import { selectedBirthdayAtom } from '../../lib/store';
 import {
