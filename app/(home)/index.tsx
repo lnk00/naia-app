@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 
 import abstract from '../../assets/images/abstract2.png';
@@ -37,6 +38,14 @@ export default function TabOneScreen() {
     router.push('/profile');
   };
 
+  const goToOwnProfile = () => {
+    router.push('/modal');
+  };
+
+  const goToAddBirthday = () => {
+    router.push('/(home)/addBirthday');
+  };
+
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
@@ -46,11 +55,11 @@ export default function TabOneScreen() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-white">
+    <View className="flex-1 bg-white overflow-hidden">
       <SectionList
-        className="w-ful mt-4"
+        className="mt-6"
+        contentInset={{ top: 80 }}
         sections={data || []}
-        contentContainerStyle={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled
         keyExtractor={(item, index) => item.id + index}
@@ -92,6 +101,23 @@ export default function TabOneScreen() {
         ListHeaderComponent={() => HeaderList(upcomminBirthdays)}
         ListEmptyComponent={EmptyComponent}
       />
+      <BlurView intensity={40} style={{ position: 'absolute', top: 0 }}>
+        <SafeAreaView>
+          <View className="flex flex-row w-screen items-center justify-between px-6 pb-4">
+            <TouchableOpacity onPress={goToOwnProfile}>
+              <View className="h-12 w-12 bg-main rounded-xl flex items-center justify-center">
+                <Text className="font-medium text-dark">DD</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="bg-dark h-12 w-12 rounded-xl flex items-center justify-center"
+              onPress={goToAddBirthday}
+            >
+              <Fontisto name="plus-a" size={16} color="#83F9D6" />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </BlurView>
     </View>
   );
 }

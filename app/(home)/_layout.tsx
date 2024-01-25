@@ -1,17 +1,9 @@
 import Fontisto from '@expo/vector-icons/build/Fontisto';
 import { Stack, useRouter } from 'expo-router';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 export default function HomeLayout() {
   const router = useRouter();
-
-  const goToProfile = () => {
-    router.push('/modal');
-  };
-
-  const goToAddBirthday = () => {
-    router.push('/(home)/addBirthday');
-  };
 
   const goBack = () => {
     router.back();
@@ -22,26 +14,7 @@ export default function HomeLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerShadowVisible: false,
-          title: '',
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-          headerLeft: () => (
-            <TouchableOpacity onPress={goToProfile}>
-              <View className="h-12 w-12 bg-main rounded-xl flex items-center justify-center">
-                <Text className="font-medium text-dark">DD</Text>
-              </View>
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              className="bg-dark h-12 w-12 rounded-xl flex items-center justify-center"
-              onPress={goToAddBirthday}
-            >
-              <Fontisto name="plus-a" size={16} color="#83F9D6" />
-            </TouchableOpacity>
-          ),
+          headerShown: false,
         }}
       />
       <Stack.Screen
