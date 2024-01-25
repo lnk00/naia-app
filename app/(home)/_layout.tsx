@@ -29,14 +29,14 @@ export default function HomeLayout() {
           },
           headerLeft: () => (
             <TouchableOpacity onPress={goToProfile}>
-              <View className="h-12 w-12 bg-main rounded-full flex items-center justify-center">
+              <View className="h-12 w-12 bg-main rounded-xl flex items-center justify-center">
                 <Text className="font-medium text-dark">DD</Text>
               </View>
             </TouchableOpacity>
           ),
           headerRight: () => (
             <TouchableOpacity
-              className="bg-dark h-12 w-12 rounded-full flex items-center justify-center"
+              className="bg-dark h-12 w-12 rounded-xl flex items-center justify-center"
               onPress={goToAddBirthday}
             >
               <Fontisto name="plus-a" size={16} color="#83F9D6" />

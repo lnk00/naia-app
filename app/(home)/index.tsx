@@ -120,6 +120,14 @@ function EmptyComponent() {
 }
 
 function HeaderList(bdays?: Birthday[]) {
+  const router = useRouter();
+  const [, setSelectedBirthday] = useAtom(selectedBirthdayAtom);
+
+  const goToProfile = (bday: Birthday) => {
+    setSelectedBirthday(bday);
+    router.push('/profile');
+  };
+
   const normalizedCurrentDate = dayjs().year(2000);
   if (bdays?.length === 0) return;
   return (
@@ -130,43 +138,47 @@ function HeaderList(bdays?: Birthday[]) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="my-6"
+        className="my-4"
       >
         {bdays?.map((bday, i) => (
-          <View key={i} className="rounded-xl self-start overflow-hidden ml-6">
-            <ImageBackground source={abstract}>
-              <BlurView intensity={20} tint="dark">
-                <View className="flex gap-4 p-4">
-                  <Text className="text-white font-medium text-xl">
-                    Dans{' '}
-                    {Math.abs(
-                      normalizedCurrentDate.diff(
-                        dayjs(bday.date).year(2000),
-                        'day',
-                      ),
-                    )}{' '}
-                    jours
-                  </Text>
-                  <View className="flex flex-row items-center gap-4">
-                    <View className="h-12 w-12 bg-white rounded-xl flex items-center justify-center">
-                      <Text className="text-dark text-lg font-bold">
-                        {bday.fullName.split(' ')[0].charAt(0)}
-                        {bday.fullName.split(' ')[1].charAt(0)}
-                      </Text>
+          <TouchableOpacity key={i} onPress={() => goToProfile(bday)}>
+            <View className="self-start ml-6">
+              <View className="rounded-xl overflow-hidden">
+                <ImageBackground source={abstract}>
+                  <BlurView intensity={20} tint="dark">
+                    <View className="flex gap-4 p-4">
+                      <View className="flex flex-row items-center justify-center gap-4">
+                        <View className="h-12 w-12 bg-white rounded-xl flex items-center justify-center">
+                          <Text className="text-dark text-lg font-semibold">
+                            {bday.fullName.split(' ')[0].charAt(0)}
+                            {bday.fullName.split(' ')[1].charAt(0)}
+                          </Text>
+                        </View>
+                        <View className="flex">
+                          <Text className="text-white text-xl font-semibold leading-5">
+                            {bday.fullName.split(' ')[0]}
+                          </Text>
+                          <Text className="text-white text-xl font-semibold leading-5">
+                            {bday.fullName.split(' ')[1]}
+                          </Text>
+                        </View>
+                      </View>
                     </View>
-                    <View className="flex">
-                      <Text className="text-white text-xl font-bold">
-                        {bday.fullName.split(' ')[0]}
-                      </Text>
-                      <Text className="text-white text-xl font-bold">
-                        {bday.fullName.split(' ')[1]}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </BlurView>
-            </ImageBackground>
-          </View>
+                  </BlurView>
+                </ImageBackground>
+              </View>
+              <Text className="font-heading text-dark font-medium text-lg mt-2">
+                Dans{' '}
+                {Math.abs(
+                  normalizedCurrentDate.diff(
+                    dayjs(bday.date).year(2000),
+                    'day',
+                  ),
+                )}{' '}
+                jours
+              </Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
