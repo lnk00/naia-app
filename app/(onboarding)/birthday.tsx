@@ -43,15 +43,17 @@ export default function BirthdayScreen() {
         Renseigne ta date de naissance.
       </Text>
       <View className="px-12 flex-1 justify-center w-full">
-        <DateTimePicker
-          mode="date"
-          display="spinner"
-          textColor="#2A2D32"
-          themeVariant="dark"
-          locale="fr-FR"
-          onChange={onChange}
-          value={date}
-        />
+        <View className="flex flex-row w-full items-center justify-between">
+          <Text className="text-dark font-semibold">Date de naissance</Text>
+          <DateTimePicker
+            mode="date"
+            accentColor="#83F9D6"
+            themeVariant="light"
+            locale="fr-FR"
+            onChange={onChange}
+            value={date}
+          />
+        </View>
         <TouchableOpacity
           className="flex flex-row gap-2 items-center justify-center p-4 rounded-xl mt-4 w-full bg-main"
           onPress={onContinue}

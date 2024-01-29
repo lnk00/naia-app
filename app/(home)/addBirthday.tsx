@@ -9,6 +9,10 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from 'react-native';
 
 import { useSession } from '../../contexts/auth';
@@ -46,44 +50,53 @@ export default function AddBirthdayScreen() {
 
   return (
     <SafeAreaView className="bg-white flex-1 items-center">
-      <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-4">
-        Ajoute un anniversaire.
-      </Text>
-      <View className="px-12 flex-1 justify-center w-full">
-        <TextInput
-          className="p-4 border-2 border-lightGray rounded-xl w-full"
-          placeholder="Prénom"
-          autoComplete="given-name"
-          autoCorrect={false}
-          placeholderTextColor="rgba(42, 45, 50, 0.43)"
-          selectionColor="#2A2D32"
-          onChangeText={setName}
-        />
-        <TextInput
-          className="p-4 border-2 border-lightGray rounded-xl w-full mt-4"
-          placeholder="Nom"
-          autoComplete="family-name"
-          autoCorrect={false}
-          placeholderTextColor="rgba(42, 45, 50, 0.43)"
-          selectionColor="#2A2D32"
-          onChangeText={setFamilyName}
-        />
-        <DateTimePicker
-          mode="date"
-          display="spinner"
-          textColor="#2A2D32"
-          themeVariant="dark"
-          locale="fr-FR"
-          onChange={onChange}
-          value={date}
-        />
-        <TouchableOpacity
-          className="flex flex-row gap-2 items-center justify-center p-4 rounded-xl mt-4 w-full bg-main"
-          onPress={onAdd}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          className="flex-1 items-center w-full"
         >
-          <Text className="text-dark font-semibold">Continuer</Text>
-        </TouchableOpacity>
-      </View>
+          <Text className="font-heading text-dark text-center text-4xl font-bold max-w-72 mt-4">
+            Ajoute un anniversaire.
+          </Text>
+          <View className="px-12 flex-1 flex items-center justify-center w-full">
+            <View className="flex flex-row w-full items-center justify-between">
+              <Text className="text-dark font-semibold">Date de naissance</Text>
+              <DateTimePicker
+                mode="date"
+                accentColor="#83F9D6"
+                themeVariant="light"
+                locale="fr-FR"
+                onChange={onChange}
+                value={date}
+              />
+            </View>
+            <TextInput
+              className="p-4 mt-6 border-2 border-lightGray rounded-xl w-full"
+              placeholder="Prénom"
+              autoComplete="given-name"
+              autoCorrect={false}
+              placeholderTextColor="rgba(42, 45, 50, 0.43)"
+              selectionColor="#2A2D32"
+              onChangeText={setName}
+            />
+            <TextInput
+              className="p-4 border-2 border-lightGray rounded-xl w-full mt-6"
+              placeholder="Nom"
+              autoComplete="family-name"
+              autoCorrect={false}
+              placeholderTextColor="rgba(42, 45, 50, 0.43)"
+              selectionColor="#2A2D32"
+              onChangeText={setFamilyName}
+            />
+            <TouchableOpacity
+              className="flex flex-row gap-2 items-center justify-center p-4 rounded-xl mt-6 w-full bg-main"
+              onPress={onAdd}
+            >
+              <Text className="text-dark font-semibold">Continuer</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
