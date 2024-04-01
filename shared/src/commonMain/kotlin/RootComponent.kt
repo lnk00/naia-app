@@ -22,9 +22,7 @@ class RootComponent {
     private val _model = MutableValue(Model(realm.query<Birthday>().find()))
     val model: Value<Model> = _model
 
-    class Model(birthdays: List<Birthday>) {
-        var items: List<Birthday> = birthdays
-    }
+    class Model(var birthdays: List<Birthday>)
 
     fun save(fname: String, lname: String, d: String) {
         val bday = Birthday().apply {
@@ -39,7 +37,7 @@ class RootComponent {
         }
 
         _model.update {
-            Model(it.items + bday)
+            Model(it.birthdays + bday)
         }
     }
 }

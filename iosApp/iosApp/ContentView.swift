@@ -51,13 +51,15 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    ForEach(model.birthdays, id: \.id) { bday in
+                        Text("\(bday.firstname)")
+                    }
+                }
+            }
             Button(action: { onAdd() }) {
                 Text("Ajouter")
-            }
-            List {
-                ForEach(model.items, id: \.id) { bday in
-                    Text("\(bday.firstname)")
-                }
             }
         }
         .popover(isPresented: $showPopover, content: { AddBdaySheet(showPopover: $showPopover, rootComponent: rootComponent) })
