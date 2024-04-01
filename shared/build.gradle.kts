@@ -21,6 +21,8 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
+            export("com.arkivanov.decompose:decompose:2.2.2")
+            export("com.arkivanov.essenty:lifecycle:1.3.0")
         }
     }
 
@@ -30,6 +32,10 @@ kotlin {
             implementation("io.realm.kotlin:library-base:1.11.0")
             implementation("io.realm.kotlin:library-sync:1.11.0") // If using Device Sync
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0") // If using coroutines with the SDK
+            implementation("com.arkivanov.decompose:decompose:2.2.2")
+            implementation("com.arkivanov.essenty:lifecycle:1.3.0")
+            api("com.arkivanov.decompose:decompose:2.2.2")
+            api("com.arkivanov.essenty:lifecycle:1.3.0")
         }
     }
 }

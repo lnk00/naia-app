@@ -1,3 +1,5 @@
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
@@ -6,17 +8,20 @@ import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class BirthdayModel : RealmObject {
-    @PrimaryKey
-    var id: ObjectId = ObjectId()
-    var firstname: String = ""
-    var lastname: String = ""
-    var date: String = ""
-}
 
 class Birthday {
     private val configuration = RealmConfiguration.create(schema = setOf(BirthdayModel::class))
     private val realm = Realm.open(configuration)
+
+    val model: Value<BirthdayModel> = MutableValue(BirthdayModel())
+
+    class BirthdayModel : RealmObject {
+        @PrimaryKey
+        var id: ObjectId = ObjectId()
+        var firstname: String = ""
+        var lastname: String = ""
+        var date: String = ""
+    }
 
     fun get(): RealmResults<BirthdayModel> {
         val all = realm.query<BirthdayModel>().find()
@@ -25,6 +30,7 @@ class Birthday {
 
     fun save(fname: String, lname: String, d: String): String {
         val bday = BirthdayModel().apply {
+            id = ObjectId()
             firstname = fname
             lastname = lname
             date = d
