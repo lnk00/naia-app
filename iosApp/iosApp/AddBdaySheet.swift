@@ -14,6 +14,13 @@ struct AddBdaySheet: View {
         case LASTNAME
     }
 
+    func onSubmit() {
+        showPopover = false
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        print(Birthday().save(fname: firstname, lname: lastname, d: formatter.string(from: date)))
+    }
+
     var body: some View {
         TabView(selection: $selectedTab) {
             VStack {
@@ -69,7 +76,7 @@ struct AddBdaySheet: View {
                 Text("Et sa date de naissance ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
                 DatePicker("", selection: $date, displayedComponents: [.date]).datePickerStyle(WheelDatePickerStyle()).labelsHidden()
                 Spacer()
-                Button(action: { withAnimation(.default, { showPopover = false; print(Birthday().save()) }) }) {
+                Button(action: { withAnimation(.default, { onSubmit() }) }) {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 20, weight: .bold))
                         .frame(width: 70, height: 70)
