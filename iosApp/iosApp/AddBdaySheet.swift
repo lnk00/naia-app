@@ -20,7 +20,7 @@ struct AddBdaySheet: View {
         showPopover = false
         let formatter = DateFormatter()
         formatter.dateStyle = .short
-        print(rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date)))
+        rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date))
     }
 
     var body: some View {
