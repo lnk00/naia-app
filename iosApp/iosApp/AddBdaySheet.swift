@@ -9,6 +9,8 @@ struct AddBdaySheet: View {
     @State private var date = Date.now
     @FocusState private var focusedField: FocusedField?
 
+    var rootComponent: RootComponent
+
     enum FocusedField {
         case FIRSTNAME
         case LASTNAME
@@ -18,7 +20,7 @@ struct AddBdaySheet: View {
         showPopover = false
         let formatter = DateFormatter()
         formatter.dateStyle = .short
-        print(Birthday().save(fname: firstname, lname: lastname, d: formatter.string(from: date)))
+        print(rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date)))
     }
 
     var body: some View {

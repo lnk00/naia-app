@@ -34,30 +34,33 @@ public class ObservableValue<T: AnyObject>: ObservableObject {
 
 struct ContentView: View {
     @State var showPopover = false
-    @State var bdays: [Birthday.BirthdayModel] = Birthday().get()
 
-    private var birthdayComponent: Birthday
+    private var rootComponent: RootComponent
 
     @StateValue
-    private var model: Birthday.BirthdayModel
+    private var model: RootComponent.Model
 
-    init(_ bday: Birthday) {
-        self.birthdayComponent = bday
-        _model = StateValue(bday.model)
+    init(_ root: RootComponent) {
+        self.rootComponent = root
+        _model = StateValue(root.model)
+    }
+
+    func onAdd() {
+        showPopover = true
     }
 
     var body: some View {
         VStack {
-            Button(action: { showPopover = true }) {
+            Button(action: { onAdd() }) {
                 Text("Ajouter")
             }
             List {
-                ForEach(bdays, id: \.id) { bday in
+                ForEach(model.items, id: \.id) { bday in
                     Text("\(bday.firstname)")
                 }
             }
         }
-        .popover(isPresented: $showPopover, content: { AddBdaySheet(showPopover: $showPopover) })
+        .popover(isPresented: $showPopover, content: { AddBdaySheet(showPopover: $showPopover, rootComponent: rootComponent) })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .padding()
     }
