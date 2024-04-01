@@ -1,4 +1,5 @@
 import SwiftUI
+import Shared
 
 struct AddBdaySheet: View {
     @Binding var showPopover: Bool
@@ -68,7 +69,7 @@ struct AddBdaySheet: View {
                 Text("Et sa date de naissance ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
                 DatePicker("", selection: $date, displayedComponents: [.date]).datePickerStyle(WheelDatePickerStyle()).labelsHidden()
                 Spacer()
-                Button(action: { withAnimation(.default, { showPopover = false }) }) {
+                Button(action: { withAnimation(.default, { showPopover = false; print(Birthday().save()) }) }) {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 20, weight: .bold))
                         .frame(width: 70, height: 70)
