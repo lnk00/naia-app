@@ -10,8 +10,10 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		32C220F21B1A9DAC60D1FE18 /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22412A3E54E509DB00890 /* ObservableValue.swift */; };
 		32C22A9A8B4DF39B53FA15DD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22FC2FE6DE98CB57EC4A6 /* Extensions.swift */; };
 		32C22E0F28695F68E28F20FB /* AddBdaySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */; };
+		32C22EF8167D8A3EC585EBB8 /* StateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C2250635BCEC37533146E5 /* StateValue.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -19,6 +21,8 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		32C22412A3E54E509DB00890 /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
+		32C2250635BCEC37533146E5 /* StateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateValue.swift; sourceTree = "<group>"; };
 		32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBdaySheet.swift; sourceTree = "<group>"; };
 		32C22FC2FE6DE98CB57EC4A6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* Naia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Naia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +48,15 @@
 				058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		32C22AD813F1F1F7D36E66F0 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				32C22412A3E54E509DB00890 /* ObservableValue.swift */,
+				32C2250635BCEC37533146E5 /* StateValue.swift */,
+			);
+			path = helpers;
 			sourceTree = "<group>";
 		};
 		42799AB246E5F90AF97AA0EF /* Frameworks */ = {
@@ -81,6 +94,7 @@
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 				32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */,
 				32C22FC2FE6DE98CB57EC4A6 /* Extensions.swift */,
+				32C22AD813F1F1F7D36E66F0 /* helpers */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -193,6 +207,8 @@
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				32C22E0F28695F68E28F20FB /* AddBdaySheet.swift in Sources */,
 				32C22A9A8B4DF39B53FA15DD /* Extensions.swift in Sources */,
+				32C220F21B1A9DAC60D1FE18 /* ObservableValue.swift in Sources */,
+				32C22EF8167D8A3EC585EBB8 /* StateValue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,13 +16,22 @@ class Birthday : RealmObject {
     var date: String = ""
 }
 
+class BirthdaySection(var id: ObjectId, var sectionTitle: String, var birthdays: List<Birthday>)
+
 class RootComponent {
     private val configuration = RealmConfiguration.create(schema = setOf(Birthday::class))
     private val realm = Realm.open(configuration)
     private val _model = MutableValue(Model(realm.query<Birthday>().find()))
     val model: Value<Model> = _model
 
-    class Model(var birthdays: List<Birthday>)
+    class Model(birthdays: List<Birthday>) {
+        var birthdays: List<Birthday> =
+            birthdays.sortedWith(compareBy({ it.date.split("/").first().toInt() }, { it.date.split("/")[1].toInt() }))
+
+        var birthdaySections: List<BirthdaySection> = this.birthdays.groupBy { it.date.split("/").first() }
+            .map { BirthdaySection(id = ObjectId(), sectionTitle = it.key, birthdays = it.value) }
+    }
+
 
     fun save(fname: String, lname: String, d: String) {
         val bday = Birthday().apply {
