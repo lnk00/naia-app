@@ -76,19 +76,20 @@ struct AddBdaySheet: View {
             }
 
             VStack {
-                Text("Et sa date de naissance ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
+                Text("Et sa date de\nnaissance ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
                 DatePicker("", selection: $date, displayedComponents: [.date]).datePickerStyle(WheelDatePickerStyle()).labelsHidden()
                 Spacer()
                 Button(action: { withAnimation(.default, { onSubmit() }) }) {
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 20, weight: .bold))
-                        .frame(width: 70, height: 70)
+                    Text("Ajouter")
+                        .font(.system(size: 20, weight: .black))
+                        .frame(maxWidth: .infinity, maxHeight: 70)
                         .foregroundColor(Color.white)
                         .background(Calendar.current.isDateInToday(date) ? Color(hex: 0xF0EFF0) : Color(hex: 0x83f9d6))
-                        .clipShape(Circle())
+                        .clipShape(RoundedRectangle(cornerRadius: 70))
                 }
                 .disabled(Calendar.current.isDateInToday(date))
                 .padding(.bottom, 50)
+                .padding(.horizontal)
             }
             .tag(2)
 

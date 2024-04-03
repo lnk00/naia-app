@@ -5,7 +5,7 @@ import Shared
 struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(RootComponent())
+            ContentView(rootComponent: RootComponent())
         }
     }
 }

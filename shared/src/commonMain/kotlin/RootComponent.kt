@@ -4,19 +4,9 @@ import com.arkivanov.decompose.value.update
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.types.RealmObject
-import io.realm.kotlin.types.annotations.PrimaryKey
+import models.Birthday
+import models.BirthdaySection
 import org.mongodb.kbson.ObjectId
-
-class Birthday : RealmObject {
-    @PrimaryKey
-    var id: ObjectId = ObjectId()
-    var firstname: String = ""
-    var lastname: String = ""
-    var date: String = ""
-}
-
-class BirthdaySection(var id: ObjectId, var sectionTitle: String, var birthdays: List<Birthday>)
 
 class RootComponent {
     private val configuration = RealmConfiguration.create(schema = setOf(Birthday::class))
