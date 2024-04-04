@@ -13,8 +13,10 @@
 		32C220F21B1A9DAC60D1FE18 /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22412A3E54E509DB00890 /* ObservableValue.swift */; };
 		32C225EB099B31156ADCAC5D /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C223BE153E270E1815FE69 /* RoundedButton.swift */; };
 		32C22A1A15C2846D530B183E /* BdayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22F6D9F0564E338444212 /* BdayList.swift */; };
+		32C22A4286E736D640A15C1C /* BdayListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C226B9EE98831E55AA904B /* BdayListHeader.swift */; };
 		32C22A9A8B4DF39B53FA15DD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22FC2FE6DE98CB57EC4A6 /* Extensions.swift */; };
 		32C22E0F28695F68E28F20FB /* AddBdaySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */; };
+		32C22E6D12F7CE9A199AEEC9 /* BdayRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C220C9052D03BE7E0BA09F /* BdayRow.swift */; };
 		32C22EF8167D8A3EC585EBB8 /* StateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C2250635BCEC37533146E5 /* StateValue.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
@@ -23,9 +25,11 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		32C220C9052D03BE7E0BA09F /* BdayRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdayRow.swift; sourceTree = "<group>"; };
 		32C223BE153E270E1815FE69 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		32C22412A3E54E509DB00890 /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		32C2250635BCEC37533146E5 /* StateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateValue.swift; sourceTree = "<group>"; };
+		32C226B9EE98831E55AA904B /* BdayListHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdayListHeader.swift; sourceTree = "<group>"; };
 		32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBdaySheet.swift; sourceTree = "<group>"; };
 		32C22F6D9F0564E338444212 /* BdayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdayList.swift; sourceTree = "<group>"; };
 		32C22FC2FE6DE98CB57EC4A6 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 				32C22AD813F1F1F7D36E66F0 /* helpers */,
 				32C22F6D9F0564E338444212 /* BdayList.swift */,
 				32C223BE153E270E1815FE69 /* RoundedButton.swift */,
+				32C220C9052D03BE7E0BA09F /* BdayRow.swift */,
+				32C226B9EE98831E55AA904B /* BdayListHeader.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -217,6 +223,8 @@
 				32C22EF8167D8A3EC585EBB8 /* StateValue.swift in Sources */,
 				32C22A1A15C2846D530B183E /* BdayList.swift in Sources */,
 				32C225EB099B31156ADCAC5D /* RoundedButton.swift in Sources */,
+				32C22E6D12F7CE9A199AEEC9 /* BdayRow.swift in Sources */,
+				32C22A4286E736D640A15C1C /* BdayListHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
