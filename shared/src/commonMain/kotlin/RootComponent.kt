@@ -4,6 +4,7 @@ import com.arkivanov.decompose.value.update
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
+import kotlinx.datetime.format.DateTimeComponents
 import models.Birthday
 import models.BirthdaySection
 import org.mongodb.kbson.ObjectId
@@ -19,11 +20,15 @@ class RootComponent {
             birthdays.sortedWith(compareBy({ it.date.split("/").first().toInt() }, { it.date.split("/")[1].toInt() }))
 
         var birthdaySections: List<BirthdaySection> = this.birthdays.groupBy { it.date.split("/").first() }
-            .map { BirthdaySection(id = ObjectId(), sectionTitle = it.key, birthdays = it.value) }
+            .map {
+                BirthdaySection(id = ObjectId(), sectionTitle = DateTimeComponents.Format { monthNumber() }
+                    .parse(it.key).month?.name.toString(), birthdays = it.value)
+            }
     }
 
 
     fun save(fname: String, lname: String, d: String) {
+
         val bday = Birthday().apply {
             id = ObjectId()
             firstname = fname
@@ -31,7 +36,7 @@ class RootComponent {
             date = d
         }
 
-        realm.writeBlocking { // this : MutableRealm
+        realm.writeBlocking {
             copyToRealm(bday)
         }
 

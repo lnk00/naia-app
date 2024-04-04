@@ -11,6 +11,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
+            Rectangle().fill(.white).frame(width: .infinity, height: 24)
             BdayList(rootComponent)
             RoundedButton(actionCallback: onAdd)
         }

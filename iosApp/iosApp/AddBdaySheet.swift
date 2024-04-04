@@ -19,8 +19,7 @@ struct AddBdaySheet: View {
     func onSubmit() {
         showPopover = false
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US")
-        formatter.dateStyle = .short
+        formatter.dateFormat = "MM/dd/yyyy"
         rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date))
     }
 
