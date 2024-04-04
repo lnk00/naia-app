@@ -9,7 +9,7 @@ struct RoundedButton: View {
                 .font(.system(size: 20, weight: .black))
                 .frame(maxWidth: .infinity, maxHeight: 70)
                 .foregroundColor(Color.white)
-                .background(Color(hex: 0x83f9d6))
+                .background(Color("AccentGreen"))
                 .clipShape(RoundedRectangle(cornerRadius: 70))
         }
     }
