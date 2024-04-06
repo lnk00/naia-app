@@ -4,7 +4,9 @@ import com.arkivanov.decompose.value.update
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
+import kotlinx.datetime.*
 import kotlinx.datetime.format.DateTimeComponents
+import kotlinx.datetime.format.char
 import models.Birthday
 import models.BirthdaySection
 import org.mongodb.kbson.ObjectId
@@ -24,11 +26,35 @@ class RootComponent {
                 BirthdaySection(id = ObjectId(), sectionTitle = DateTimeComponents.Format { monthNumber() }
                     .parse(it.key).month?.name.toString(), birthdays = it.value)
             }
+
+        var averageAge = birthdays.sumOf {
+            val dateFormat = LocalDate.Format {
+                monthNumber()
+                char('/')
+                dayOfMonth()
+                char('/')
+                year()
+            }.parse(it.date)
+
+            val instant = dateFormat.atTime(0, 0).toInstant(TimeZone.UTC)
+            instant.yearsUntil(Clock.System.now(), TimeZone.UTC)
+        } / birthdays.count()
+
+        var currentMonthBdays = birthdays.count {
+            val dateFormat = LocalDate.Format {
+                monthNumber()
+                char('/')
+                dayOfMonth()
+                char('/')
+                year()
+            }.parse(it.date)
+
+            dateFormat.monthNumber == Clock.System.now().toLocalDateTime(TimeZone.UTC).monthNumber
+        }
     }
 
 
     fun save(fname: String, lname: String, d: String) {
-
         val bday = Birthday().apply {
             id = ObjectId()
             firstname = fname

@@ -15,7 +15,7 @@ struct BdayList: View {
         ScrollView {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("12").font(.system(size: 42, weight: .black)).foregroundColor(.white)
+                    Text("\(model.currentMonthBdays)").font(.system(size: 42, weight: .black)).foregroundColor(.white)
                     Spacer(minLength: 12)
                     Text("Anniversaire en Avril").font(.system(size: 18, weight: .black)).foregroundColor(.white)
                 }
@@ -24,7 +24,7 @@ struct BdayList: View {
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color("AccentGreen")))
 
                 VStack(alignment: .leading) {
-                    Text("34").font(.system(size: 42, weight: .black)).foregroundColor(.white)
+                    Text("\(model.averageAge)").font(.system(size: 42, weight: .black)).foregroundColor(.white)
                     Spacer(minLength: 12)
                     Text("Moyenne d'age de tes proches").font(.system(size: 18, weight: .black)).foregroundColor(.white)
                 }
