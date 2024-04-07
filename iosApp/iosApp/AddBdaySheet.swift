@@ -100,6 +100,7 @@ struct AddBdaySheet: View {
         .onAppear {
             focusedField = .FIRSTNAME
         }
+        .presentationDragIndicator(.visible)
 
     }
 }

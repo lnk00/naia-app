@@ -1,10 +1,19 @@
 import Shared
 import SwiftUI
 
+struct Item: Identifiable {
+    let id = UUID()
+    let bday: Birthday
+}
+
 struct BdayList: View {
     var rootComponent: RootComponent
 
     @StateValue private var model: RootComponent.Model
+
+    @State private var isShowingSheet = false
+
+    @State var selectedBday: Item?
 
     init(_ root: RootComponent) {
         self.rootComponent = root
@@ -38,11 +47,19 @@ struct BdayList: View {
                     Section {
                         ForEach(section.birthdays, id: \.id) { bday in
                             BdayRow(bday: bday)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    selectedBday = Item(bday: bday)
+                                }
+                        }
+                        .sheet(item: $selectedBday) { item in
+                            Text("\(item.bday.firstname)").font(.system(size: 18, weight: .black)).presentationDetents([.medium])
                         }
                     } header: {
                         BdayListHeader(section: section)
                     }
                 }
+                Spacer(minLength: 70)
             }
         }
         .scrollIndicators(.hidden)
