@@ -19,55 +19,71 @@ class RootComponent {
 
     class Model(birthdays: List<Birthday>) {
         var birthdays: List<Birthday> =
-            birthdays.sortedWith(compareBy({ it.date.split("/").first().toInt() }, { it.date.split("/")[1].toInt() }))
+                birthdays.sortedWith(
+                        compareBy(
+                                { it.date.split("/").first().toInt() },
+                                { it.date.split("/")[1].toInt() }
+                        )
+                )
 
-        var birthdaySections: List<BirthdaySection> = this.birthdays.groupBy { it.date.split("/").first() }
-            .map {
-                BirthdaySection(id = ObjectId(), sectionTitle = DateTimeComponents.Format { monthNumber() }
-                    .parse(it.key).month?.name.toString(), birthdays = it.value)
-            }
+        var birthdaySections: List<BirthdaySection> =
+                this.birthdays.groupBy { it.date.split("/").first() }.map {
+                    BirthdaySection(
+                            id = ObjectId(),
+                            sectionTitle =
+                                    DateTimeComponents.Format { monthNumber() }
+                                            .parse(it.key)
+                                            .month
+                                            ?.name
+                                            .toString(),
+                            birthdays = it.value
+                    )
+                }
 
-        var averageAge = birthdays.sumOf {
-            val dateFormat = LocalDate.Format {
-                monthNumber()
-                char('/')
-                dayOfMonth()
-                char('/')
-                year()
-            }.parse(it.date)
+        var averageAge =
+                birthdays.sumOf {
+                    val dateFormat =
+                            LocalDate.Format {
+                                        monthNumber()
+                                        char('/')
+                                        dayOfMonth()
+                                        char('/')
+                                        year()
+                                    }
+                                    .parse(it.date)
 
-            val instant = dateFormat.atTime(0, 0).toInstant(TimeZone.UTC)
-            instant.yearsUntil(Clock.System.now(), TimeZone.UTC)
-        } / birthdays.count()
+                    val instant = dateFormat.atTime(0, 0).toInstant(TimeZone.UTC)
+                    instant.yearsUntil(Clock.System.now(), TimeZone.UTC)
+                } / birthdays.count()
 
-        var currentMonthBdays = birthdays.count {
-            val dateFormat = LocalDate.Format {
-                monthNumber()
-                char('/')
-                dayOfMonth()
-                char('/')
-                year()
-            }.parse(it.date)
+        var currentMonthBdays =
+                birthdays.count {
+                    val dateFormat =
+                            LocalDate.Format {
+                                        monthNumber()
+                                        char('/')
+                                        dayOfMonth()
+                                        char('/')
+                                        year()
+                                    }
+                                    .parse(it.date)
 
-            dateFormat.monthNumber == Clock.System.now().toLocalDateTime(TimeZone.UTC).monthNumber
-        }
+                    dateFormat.monthNumber ==
+                            Clock.System.now().toLocalDateTime(TimeZone.UTC).monthNumber
+                }
     }
 
-
     fun save(fname: String, lname: String, d: String) {
-        val bday = Birthday().apply {
-            id = ObjectId()
-            firstname = fname
-            lastname = lname
-            date = d
-        }
+        val bday =
+                Birthday().apply {
+                    id = ObjectId()
+                    firstname = fname
+                    lastname = lname
+                    date = d
+                }
 
-        realm.writeBlocking {
-            copyToRealm(bday)
-        }
+        realm.writeBlocking { copyToRealm(bday) }
 
-        _model.update {
-            Model(it.birthdays + bday)
-        }
+        _model.update { Model(it.birthdays + bday) }
     }
 }

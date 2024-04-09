@@ -18,6 +18,7 @@ struct ContentView: View {
             }
             .background(.white)
             .frame(width: .infinity, height: 72)
+
             BdayList(rootComponent)
         }
         .popover(isPresented: $showPopover, content: { AddBdaySheet(showPopover: $showPopover, rootComponent: rootComponent) })
