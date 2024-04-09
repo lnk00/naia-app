@@ -53,13 +53,20 @@ struct BdayList: View {
                                 }
                         }
                         .sheet(item: $selectedBday) { item in
-                            Text("\(item.bday.firstname)").font(.system(size: 18, weight: .black)).presentationDetents([.medium])
+                            Text("\(item.bday.firstname)").font(.system(size: 18, weight: .black))
+                                .presentationDetents([.medium])
+                                .presentationDragIndicator(.visible)
                         }
                     } header: {
                         BdayListHeader(section: section)
                     }
                 }
-                Spacer(minLength: 70)
+                HStack {
+                    Spacer()
+                    RoundedButton(actionCallback: {})
+                    Spacer()
+                }
+                .frame(width: .infinity).padding(.top, 24)
             }
         }
         .scrollIndicators(.hidden)

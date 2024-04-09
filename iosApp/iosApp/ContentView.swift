@@ -11,16 +11,14 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Rectangle().fill(.white).frame(width: .infinity, height: 24)
-            ZStack {
-                BdayList(rootComponent)
-                VStack {
-                    Spacer()
-                    RoundedButton(actionCallback: onAdd)
-                }
-
+            HStack {
+                Text("Naia").font(.system(size: 24, weight: .black))
+                Spacer()
+                RoundedButton(actionCallback: onAdd)
             }
-
+            .background(.white)
+            .frame(width: .infinity, height: 72)
+            BdayList(rootComponent)
         }
         .popover(isPresented: $showPopover, content: { AddBdaySheet(showPopover: $showPopover, rootComponent: rootComponent) })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
