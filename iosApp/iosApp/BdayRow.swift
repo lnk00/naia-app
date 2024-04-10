@@ -14,11 +14,7 @@ struct BdayRow: View {
 
     var body: some View {
         HStack {
-            Text(bday.firstname.prefix(1) + bday.lastname.prefix(1))
-                .font(.system(size: 16, weight: .bold))
-                .frame(width: 50, height: 50)
-                .background(Color(hex: 0xF0EFF0))
-                .cornerRadius(15)
+            Image("avatar_9").resizable().frame(width: 50, height: 50).aspectRatio(contentMode: .fit)
             VStack(alignment: .leading) {
                 Text(bday.firstname + " " + bday.lastname).font(.system(size: 16, weight: .bold))
                 Text(formatDate(date: bday.date)).font(.system(size: 16, weight: .bold)).opacity(0.2)

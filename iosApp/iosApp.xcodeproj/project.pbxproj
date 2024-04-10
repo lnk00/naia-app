@@ -12,9 +12,12 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		32C220F21B1A9DAC60D1FE18 /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22412A3E54E509DB00890 /* ObservableValue.swift */; };
 		32C225EB099B31156ADCAC5D /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C223BE153E270E1815FE69 /* RoundedButton.swift */; };
+		32C2293DBA4AA997774F5EFD /* AvatarPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C225C9E7B5FFB779B5F87F /* AvatarPicker.swift */; };
 		32C22A1A15C2846D530B183E /* BdayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22F6D9F0564E338444212 /* BdayList.swift */; };
 		32C22A4286E736D640A15C1C /* BdayListHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C226B9EE98831E55AA904B /* BdayListHeader.swift */; };
 		32C22A9A8B4DF39B53FA15DD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22FC2FE6DE98CB57EC4A6 /* Extensions.swift */; };
+		32C22A9FFE23E9EB1791EF49 /* BdaySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C223B7C4041D56A4E04EDF /* BdaySheet.swift */; };
+		32C22DF93EAD33F97C6B64A2 /* StatRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C22351C4E92309579CCA85 /* StatRow.swift */; };
 		32C22E0F28695F68E28F20FB /* AddBdaySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */; };
 		32C22E6D12F7CE9A199AEEC9 /* BdayRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C220C9052D03BE7E0BA09F /* BdayRow.swift */; };
 		32C22EF8167D8A3EC585EBB8 /* StateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C2250635BCEC37533146E5 /* StateValue.swift */; };
@@ -26,9 +29,12 @@
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		32C220C9052D03BE7E0BA09F /* BdayRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdayRow.swift; sourceTree = "<group>"; };
+		32C22351C4E92309579CCA85 /* StatRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatRow.swift; sourceTree = "<group>"; };
+		32C223B7C4041D56A4E04EDF /* BdaySheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdaySheet.swift; sourceTree = "<group>"; };
 		32C223BE153E270E1815FE69 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		32C22412A3E54E509DB00890 /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		32C2250635BCEC37533146E5 /* StateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateValue.swift; sourceTree = "<group>"; };
+		32C225C9E7B5FFB779B5F87F /* AvatarPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarPicker.swift; sourceTree = "<group>"; };
 		32C226B9EE98831E55AA904B /* BdayListHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdayListHeader.swift; sourceTree = "<group>"; };
 		32C227C6BD7704563E9F8865 /* AddBdaySheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBdaySheet.swift; sourceTree = "<group>"; };
 		32C22F6D9F0564E338444212 /* BdayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BdayList.swift; sourceTree = "<group>"; };
@@ -107,6 +113,9 @@
 				32C223BE153E270E1815FE69 /* RoundedButton.swift */,
 				32C220C9052D03BE7E0BA09F /* BdayRow.swift */,
 				32C226B9EE98831E55AA904B /* BdayListHeader.swift */,
+				32C22351C4E92309579CCA85 /* StatRow.swift */,
+				32C223B7C4041D56A4E04EDF /* BdaySheet.swift */,
+				32C225C9E7B5FFB779B5F87F /* AvatarPicker.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -225,6 +234,9 @@
 				32C225EB099B31156ADCAC5D /* RoundedButton.swift in Sources */,
 				32C22E6D12F7CE9A199AEEC9 /* BdayRow.swift in Sources */,
 				32C22A4286E736D640A15C1C /* BdayListHeader.swift in Sources */,
+				32C22DF93EAD33F97C6B64A2 /* StatRow.swift in Sources */,
+				32C22A9FFE23E9EB1791EF49 /* BdaySheet.swift in Sources */,
+				32C2293DBA4AA997774F5EFD /* AvatarPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

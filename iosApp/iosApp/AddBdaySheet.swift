@@ -25,6 +25,7 @@ struct AddBdaySheet: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
+            AvatarPicker().tag(0)
             VStack {
                 Text("Quel est\nson prénom ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
                 TextField("", text: $firstname, prompt: Text("John").foregroundColor(Color(hex: 0xF0EFF0)))
@@ -46,7 +47,7 @@ struct AddBdaySheet: View {
                 .disabled(firstname.isEmpty)
                 .padding(.bottom, 50)
             }
-            .tag(0)
+            .tag(1)
 
             VStack {
                 Text("Quel est le \nnom de \(firstname) ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
@@ -69,7 +70,7 @@ struct AddBdaySheet: View {
                 .disabled(lastname.isEmpty)
                 .padding(.bottom, 50)
             }
-            .tag(1)
+            .tag(2)
             .onAppear {
                 focusedField = .LASTNAME
             }
@@ -90,7 +91,7 @@ struct AddBdaySheet: View {
                 .padding(.bottom, 50)
                 .padding(.horizontal)
             }
-            .tag(2)
+            .tag(3)
 
         }
         .padding(.top)
