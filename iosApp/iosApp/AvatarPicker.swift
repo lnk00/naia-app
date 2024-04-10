@@ -1,7 +1,12 @@
 import SwiftUI
 
 struct AvatarPicker: View {
+    var firstname: String
+    var onSubmit: () -> Void
+
     @State private var currentIndex: Int = 0
+    @Binding var img: String
+
 
     let cards: [Card] = [
         Card(id: 0, img: "avatar_1"),
@@ -18,29 +23,49 @@ struct AvatarPicker: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                ForEach(cards) { card in
-                    CarouselCardView(card: card, currentIndex: $currentIndex, geometry: geometry)
+            VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Text("A quoi ressemble \(firstname) ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
+                    Spacer()
                 }
-            }
-            .gesture(
-                DragGesture()
-                    .onEnded { value in
-                        let cardWidth = geometry.size.width * 0.3
-                        let offset = value.translation.width / cardWidth
 
-                        withAnimation(Animation.spring()) {
-                            if value.translation.width < -offset {
-                                currentIndex = min(currentIndex + 1, cards.count - 1)
-                            } else if value.translation.width > offset {
-                                currentIndex = max(currentIndex - 1, 0)
+                Spacer()
+                ZStack {
+                    ForEach(cards) { card in
+                        CarouselCardView(card: card, currentIndex: $currentIndex, geometry: geometry)
+                    }
+                }
+                .gesture(
+                    DragGesture()
+                        .onEnded { value in
+                            let cardWidth = geometry.size.width * 0.3
+                            let offset = value.translation.width / cardWidth
+
+                            withAnimation(Animation.spring()) {
+                                if value.translation.width < -offset {
+                                    currentIndex = min(currentIndex + 1, cards.count - 1)
+                                } else if value.translation.width > offset {
+                                    currentIndex = max(currentIndex - 1, 0)
+                                }
+                                img = cards[currentIndex].img
                             }
                         }
-
-                    }
-            )
+                )
+                Spacer()
+                Button(action: { onSubmit() }) {
+                    Text("Ajouter")
+                        .font(.system(size: 20, weight: .black))
+                        .frame(maxWidth: .infinity, maxHeight: 70)
+                        .foregroundColor(Color.white)
+                        .background(Color("AccentGreen"))
+                        .clipShape(RoundedRectangle(cornerRadius: 70))
+                }
+                .padding(.bottom, 50)
+                .padding(.horizontal, 24)
+            }
+            .padding(.top, 24)
         }
-        .padding(.top, 132)
     }
 }
 
@@ -65,6 +90,6 @@ struct CarouselCardView: View {
 
         }
         .frame(width: cardWidth, height: cardHeight)
-        .offset(x: CGFloat(card.id - currentIndex) * (cardWidth * 0.9) + (UIScreen.main.bounds.width / 2 - cardWidth / 2))
+        .offset(x: CGFloat(card.id - currentIndex) * (cardWidth * 0.9) + (UIScreen.main.bounds.width / 2) - (cardWidth / 2))
     }
 }

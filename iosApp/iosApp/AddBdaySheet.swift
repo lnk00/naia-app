@@ -7,6 +7,7 @@ struct AddBdaySheet: View {
     @State private var firstname: String = ""
     @State private var lastname: String = ""
     @State private var date = Date.now
+    @State var img = ""
     @FocusState private var focusedField: FocusedField?
 
     var rootComponent: RootComponent
@@ -20,12 +21,11 @@ struct AddBdaySheet: View {
         showPopover = false
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date))
+        rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date), image: img)
     }
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            AvatarPicker().tag(0)
             VStack {
                 Text("Quel est\nson prénom ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
                 TextField("", text: $firstname, prompt: Text("John").foregroundColor(Color(hex: 0xF0EFF0)))
@@ -36,7 +36,7 @@ struct AddBdaySheet: View {
                     .multilineTextAlignment(.center)
                     .focused($focusedField, equals: .FIRSTNAME)
                 Spacer()
-                Button(action: { withAnimation(.default, { selectedTab += 1 }) }) {
+                Button(action: { withAnimation(.default, { selectedTab += 1; focusedField = .LASTNAME }) }) {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 20, weight: .bold))
                         .frame(width: 70, height: 70)
@@ -45,9 +45,11 @@ struct AddBdaySheet: View {
                         .clipShape(Circle())
                 }
                 .disabled(firstname.isEmpty)
+
                 .padding(.bottom, 50)
             }
-            .tag(1)
+            .padding(.top, 24)
+            .tag(0)
 
             VStack {
                 Text("Quel est le \nnom de \(firstname) ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
@@ -59,7 +61,7 @@ struct AddBdaySheet: View {
                     .multilineTextAlignment(.center)
                     .focused($focusedField, equals: .LASTNAME)
                 Spacer()
-                Button(action: { withAnimation(.default, { selectedTab += 1; focusedField = nil }) }) {
+                Button(action: { withAnimation(.default, { selectedTab += 1; hideKeyboard() }) }) {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 20, weight: .bold))
                         .frame(width: 70, height: 70)
@@ -70,38 +72,36 @@ struct AddBdaySheet: View {
                 .disabled(lastname.isEmpty)
                 .padding(.bottom, 50)
             }
-            .tag(2)
-            .onAppear {
-                focusedField = .LASTNAME
-            }
+            .padding(.top, 24)
+            .tag(1)
 
             VStack {
                 Text("Et sa date de\nnaissance ?").font(.largeTitle.weight(.black)).multilineTextAlignment(.center)
                 DatePicker("", selection: $date, displayedComponents: [.date]).datePickerStyle(WheelDatePickerStyle()).labelsHidden()
                 Spacer()
-                Button(action: { withAnimation(.default, { onSubmit() }) }) {
-                    Text("Ajouter")
-                        .font(.system(size: 20, weight: .black))
-                        .frame(maxWidth: .infinity, maxHeight: 70)
+                Button(action: { withAnimation(.default, { selectedTab += 1; hideKeyboard() }) }) {
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 20, weight: .bold))
+                        .frame(width: 70, height: 70)
                         .foregroundColor(Color.white)
-                        .background(Calendar.current.isDateInToday(date) ? Color(hex: 0xF0EFF0) : Color(hex: 0x83f9d6))
-                        .clipShape(RoundedRectangle(cornerRadius: 70))
+                        .background(Calendar.current.isDateInToday(date) ? Color(hex: 0xF0EFF0) : Color("AccentRed"))
+                        .clipShape(Circle())
                 }
                 .disabled(Calendar.current.isDateInToday(date))
                 .padding(.bottom, 50)
-                .padding(.horizontal)
-            }
-            .tag(3)
 
+            }
+            .padding(.top, 24)
+            .tag(2)
+            AvatarPicker(firstname: firstname, onSubmit: onSubmit, img: $img).tag(3)
         }
         .padding(.top)
         .animation(.easeInOut(duration: 0.3), value: selectedTab)
         .tabViewStyle(.page)
         .indexViewStyle(.page(backgroundDisplayMode: .always))
+        .presentationDragIndicator(.visible)
         .onAppear {
             focusedField = .FIRSTNAME
         }
-        .presentationDragIndicator(.visible)
-
     }
 }

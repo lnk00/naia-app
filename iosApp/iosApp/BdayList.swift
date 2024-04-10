@@ -8,21 +8,21 @@ struct Item: Identifiable {
 
 struct BdayList: View {
     var rootComponent: RootComponent
-
+    var onAdd: () -> Void
     @StateValue private var model: RootComponent.Model
-
-    @State private var isShowingSheet = false
-
     @State var selectedBday: Item?
 
-    init(_ root: RootComponent) {
+    init(_ root: RootComponent, onAdd: @escaping () -> Void) {
         self.rootComponent = root
         _model = StateValue(root.model)
+        self.onAdd = onAdd
     }
 
     var body: some View {
         ScrollView {
-            StatRow(currentMonthBdays: model.currentMonthBdays, averageAge: model.averageAge)
+            if !model.birthdays.isEmpty {
+                StatRow(currentMonthBdays: model.currentMonthBdays, averageAge: model.averageAge)
+            }
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                 ForEach(model.birthdaySections, id: \.id) { section in
                     Section {
@@ -42,7 +42,7 @@ struct BdayList: View {
                 }
                 HStack {
                     Spacer()
-                    RoundedButton(actionCallback: {})
+                    RoundedButton(actionCallback: onAdd)
                     Spacer()
                 }
                 .frame(width: .infinity).padding(.top, 24)

@@ -19,7 +19,7 @@ struct ContentView: View {
             .background(.white)
             .frame(width: .infinity, height: 72)
 
-            BdayList(rootComponent)
+            BdayList(rootComponent, onAdd: onAdd)
         }
         .popover(isPresented: $showPopover, content: { AddBdaySheet(showPopover: $showPopover, rootComponent: rootComponent) })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

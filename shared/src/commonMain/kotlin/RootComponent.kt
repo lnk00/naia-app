@@ -18,69 +18,80 @@ class RootComponent {
     val model: Value<Model> = _model
 
     class Model(birthdays: List<Birthday>) {
-        var birthdays: List<Birthday> =
-                birthdays.sortedWith(
-                        compareBy(
-                                { it.date.split("/").first().toInt() },
-                                { it.date.split("/")[1].toInt() }
-                        )
+        var birthdays: List<Birthday> = birthdays.sortedWith(
+            compareBy(
+                { it.date.split("/").first().toInt() },
+                { it.date.split("/")[1].toInt() }
+            )
+        )
+
+        var birthdaySections: List<BirthdaySection> = getBirthdaySections()
+        var averageAge = getAverageAge()
+        var currentMonthBdays = getCurrentMonthBdays()
+
+        private fun getBirthdaySections(): List<BirthdaySection> {
+            return birthdays.groupBy { it.date.split("/").first() }.map {
+                BirthdaySection(
+                    id = ObjectId(),
+                    sectionTitle =
+                    DateTimeComponents.Format { monthNumber() }
+                        .parse(it.key)
+                        .month
+                        ?.name
+                        .toString(),
+                    birthdays = it.value
                 )
+            }
+        }
 
-        var birthdaySections: List<BirthdaySection> =
-                this.birthdays.groupBy { it.date.split("/").first() }.map {
-                    BirthdaySection(
-                            id = ObjectId(),
-                            sectionTitle =
-                                    DateTimeComponents.Format { monthNumber() }
-                                            .parse(it.key)
-                                            .month
-                                            ?.name
-                                            .toString(),
-                            birthdays = it.value
-                    )
-                }
+        private fun getCurrentMonthBdays(): Int {
+            return birthdays.count {
+                val dateFormat =
+                    LocalDate.Format {
+                        monthNumber()
+                        char('/')
+                        dayOfMonth()
+                        char('/')
+                        year()
+                    }
+                        .parse(it.date)
 
-        var averageAge =
-                birthdays.sumOf {
-                    val dateFormat =
-                            LocalDate.Format {
-                                        monthNumber()
-                                        char('/')
-                                        dayOfMonth()
-                                        char('/')
-                                        year()
-                                    }
-                                    .parse(it.date)
+                dateFormat.monthNumber ==
+                        Clock.System.now().toLocalDateTime(TimeZone.UTC).monthNumber
+            }
+        }
 
-                    val instant = dateFormat.atTime(0, 0).toInstant(TimeZone.UTC)
-                    instant.yearsUntil(Clock.System.now(), TimeZone.UTC)
-                } / birthdays.count()
+        private fun getAverageAge(): Int {
+            if (birthdays.isEmpty()) return 0
 
-        var currentMonthBdays =
-                birthdays.count {
-                    val dateFormat =
-                            LocalDate.Format {
-                                        monthNumber()
-                                        char('/')
-                                        dayOfMonth()
-                                        char('/')
-                                        year()
-                                    }
-                                    .parse(it.date)
+            val ageSum = birthdays.sumOf {
+                val dateFormat =
+                    LocalDate.Format {
+                        monthNumber()
+                        char('/')
+                        dayOfMonth()
+                        char('/')
+                        year()
+                    }
+                        .parse(it.date)
 
-                    dateFormat.monthNumber ==
-                            Clock.System.now().toLocalDateTime(TimeZone.UTC).monthNumber
-                }
+                val instant = dateFormat.atTime(0, 0).toInstant(TimeZone.UTC)
+                instant.yearsUntil(Clock.System.now(), TimeZone.UTC)
+            }
+
+            return ageSum / birthdays.count()
+        }
     }
 
-    fun save(fname: String, lname: String, d: String) {
+    fun save(fname: String, lname: String, d: String, image: String) {
         val bday =
-                Birthday().apply {
-                    id = ObjectId()
-                    firstname = fname
-                    lastname = lname
-                    date = d
-                }
+            Birthday().apply {
+                id = ObjectId()
+                firstname = fname
+                lastname = lname
+                date = d
+                img = image
+            }
 
         realm.writeBlocking { copyToRealm(bday) }
 
