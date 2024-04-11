@@ -19,35 +19,45 @@ struct BdayList: View {
     }
 
     var body: some View {
-        ScrollView {
-            if !model.birthdays.isEmpty {
+        if !model.birthdays.isEmpty {
+            ScrollView {
+
                 StatRow(currentMonthBdays: model.currentMonthBdays, averageAge: model.averageAge)
-            }
-            LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
-                ForEach(model.birthdaySections, id: \.id) { section in
-                    Section {
-                        ForEach(section.birthdays, id: \.id) { bday in
-                            BdayRow(bday: bday)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    selectedBday = Item(bday: bday)
-                                }
+                LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    ForEach(model.birthdaySections, id: \.id) { section in
+                        Section {
+                            ForEach(section.birthdays, id: \.id) { bday in
+                                BdayRow(bday: bday)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        selectedBday = Item(bday: bday)
+                                    }
+                            }
+                            .sheet(item: $selectedBday) { item in
+                                BdaySheet(bday: item.bday)
+                            }
+                        } header: {
+                            BdayListHeader(section: section)
                         }
-                        .sheet(item: $selectedBday) { item in
-                            BdaySheet(bday: item.bday)
-                        }
-                    } header: {
-                        BdayListHeader(section: section)
                     }
+                    HStack {
+                        Spacer()
+                        RoundedButton(actionCallback: onAdd)
+                        Spacer()
+                    }
+                    .frame(width: .infinity).padding(.top, 24)
                 }
-                HStack {
-                    Spacer()
-                    RoundedButton(actionCallback: onAdd)
-                    Spacer()
-                }
-                .frame(width: .infinity).padding(.top, 24)
+
+            }
+            .scrollIndicators(.hidden)
+        } else {
+            VStack {
+                Spacer()
+                Image("empty_list").resizable().frame(width: 120, height: 120).aspectRatio(contentMode: .fit)
+                Text("Tu n'as pas encore ajouter d'anniversaire").font(.system(size: 20, weight: .bold)).multilineTextAlignment(.center)
+                RoundedButton(actionCallback: onAdd)
+                Spacer()
             }
         }
-        .scrollIndicators(.hidden)
     }
 }
