@@ -4,6 +4,7 @@ import com.arkivanov.decompose.value.update
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.query.find
 import kotlinx.datetime.*
 import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.char
@@ -96,5 +97,18 @@ class RootComponent {
         realm.writeBlocking { copyToRealm(bday) }
 
         _model.update { Model(it.birthdays + bday) }
+    }
+
+    fun delete(id: ObjectId) {
+        val bday = realm.query<Birthday>("id == $0", id).find().firstOrNull()
+        realm.writeBlocking {
+            if (bday != null) {
+                findLatest(bday)?.also { delete(it) }
+            }
+        }
+
+        _model.update {
+            Model(it.birthdays.filter { bday -> bday.id != id })
+        }
     }
 }
