@@ -7,6 +7,7 @@ struct BdayRow: View {
     func formatDate(date: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
+        formatter.locale = Locale(identifier: "fr_FR_POSIX")
         let d = formatter.date(from: date)
         formatter.dateFormat = "dd MMMM yyyy"
         return formatter.string(from: d ?? Date.now)
