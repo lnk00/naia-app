@@ -1,9 +1,16 @@
+import BackgroundTasks
 import SwiftUI
 import Shared
 
+
 struct ContentView: View {
-    @State var showPopover = false
+    @State var showPopover: Bool
     var rootComponent: RootComponent
+
+    init(rootComponent: RootComponent) {
+        self.showPopover = false
+        self.rootComponent = rootComponent
+    }
 
     func onAdd() {
         showPopover = true

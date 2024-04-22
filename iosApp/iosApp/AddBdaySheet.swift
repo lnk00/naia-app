@@ -1,6 +1,7 @@
 import SwiftUI
 import Shared
 
+
 struct AddBdaySheet: View {
     @Binding var showPopover: Bool
     @State private var selectedTab: Int = 0
@@ -21,7 +22,8 @@ struct AddBdaySheet: View {
         showPopover = false
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date), image: img)
+        let id = rootComponent.save(fname: firstname, lname: lastname, d: formatter.string(from: date), image: img)
+        scheduleNotification(name: "\(firstname) \(lastname)", date: date, id: id)
     }
 
     var body: some View {

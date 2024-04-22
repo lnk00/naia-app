@@ -83,7 +83,7 @@ class RootComponent {
         }
     }
 
-    fun save(fname: String, lname: String, d: String, image: String) {
+    fun save(fname: String, lname: String, d: String, image: String): ObjectId {
         val bday =
             Birthday().apply {
                 id = ObjectId()
@@ -96,6 +96,8 @@ class RootComponent {
         realm.writeBlocking { copyToRealm(bday) }
 
         _model.update { Model(it.birthdays + bday) }
+
+        return bday.id
     }
 
     fun delete(id: ObjectId) {

@@ -30,7 +30,7 @@ struct BdaySheet: View {
                         .clipShape(Circle())
                 }
                 .disabled(false)
-                Button(action: { onDelete(bday.id); presentationMode.wrappedValue.dismiss() }) {
+                Button(action: { onDelete(bday.id); deleteScheduledNotification(bday.id); presentationMode.wrappedValue.dismiss() }) {
                     Image(systemName: "trash")
                         .font(.system(size: 20, weight: .bold))
                         .frame(width: 70, height: 70)
