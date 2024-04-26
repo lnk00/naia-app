@@ -16,6 +16,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     id("io.realm.kotlin") version "1.11.0"
     id("com.codingfeline.buildkonfig") version "0.15.1"
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 kotlin {
@@ -53,6 +54,7 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
             implementation("com.raedghazal:kotlinx_datetime_ext:1.2.0")
             implementation("io.github.jan-tennert.supabase:postgrest-kt:2.3.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
         }
 
         iosMain.dependencies {

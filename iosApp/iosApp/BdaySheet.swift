@@ -1,15 +1,10 @@
 import SwiftUI
 import Shared
 
-extension View {
-    func endEditing() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-
 struct BdaySheet: View {
     var bday: Birthday
     var onDelete: (_ id: KbsonBsonObjectId) -> Void
+    var onSaveGift: (_ idea: String) -> Void
     @Environment(\.presentationMode) var presentationMode
     @State private var showGiftAlert: Bool = true
     @State private var giftIdea: String = ""
@@ -84,7 +79,9 @@ struct BdaySheet: View {
 
 
                     HStack {
-                        Button(action: {}) {
+                        Button(action: { onSaveGift(giftIdea); withAnimation {
+                            showGiftAlert.toggle()
+                        } }) {
                             Text("envoyer")
                                 .font(.system(size: 18, weight: .semibold))
                                 .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 40)

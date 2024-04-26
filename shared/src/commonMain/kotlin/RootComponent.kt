@@ -1,12 +1,17 @@
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
+import io.github.jan.supabase.postgrest.from
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.ext.query
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.datetime.*
 import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.char
+import kotlinx.serialization.Serializable
 import models.Birthday
 import models.BirthdaySection
 import org.mongodb.kbson.ObjectId
@@ -110,4 +115,16 @@ class RootComponent {
             Model(it.birthdays.filter { bday -> bday.id != id })
         }
     }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun saveGiftIdea(idea: String) {
+        val gift = Gift(desc = idea)
+        GlobalScope.launch {
+            supabase.from("gift_ideas").insert(gift) {}
+        }
+
+    }
 }
+
+@Serializable
+class Gift(val desc: String) {}
