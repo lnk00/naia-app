@@ -11,8 +11,8 @@ func scheduleNotification(name: String, date: Date, id: KbsonBsonObjectId) {
     var datComp = DateComponents()
     datComp.month = date.get(.month)
     datComp.day = date.get(.day)
-    datComp.hour = 8
-    datComp.minute = 36
+    datComp.hour = 5
+    datComp.minute = 25
 
     let trigger = UNCalendarNotificationTrigger(dateMatching: datComp, repeats: true)
 

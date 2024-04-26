@@ -1,7 +1,21 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.konan.properties.Properties
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0")
+        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.1")
+    }
+}
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     id("io.realm.kotlin") version "1.11.0"
+    id("com.codingfeline.buildkonfig") version "0.15.1"
 }
 
 kotlin {
@@ -38,6 +52,11 @@ kotlin {
             api("com.arkivanov.essenty:lifecycle:1.3.0")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
             implementation("com.raedghazal:kotlinx_datetime_ext:1.2.0")
+            implementation("io.github.jan-tennert.supabase:postgrest-kt:2.3.1")
+        }
+
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:2.3.8")
         }
     }
 }
@@ -51,5 +70,25 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+buildkonfig {
+    packageName = "com.lnk0.naia"
+
+    val props = Properties()
+    props.load(file("key.properties").inputStream())
+
+    defaultConfigs {
+        buildConfigField(
+            STRING,
+            "SUPABASE_URL",
+            props["supabase_url"]?.toString() ?: "http://fake.backend.url"
+        )
+        buildConfigField(
+            STRING,
+            "SUPABASE_SECRET",
+            props["supabase_secret"]?.toString() ?: "fakesecret"
+        )
     }
 }
