@@ -104,7 +104,7 @@ class RootComponent {
     }
 
     fun delete(id: ObjectId) {
-        val bday = realm.query<Birthday>("id == $0", id).find().firstOrNull()
+        val bday = realm.query<Birthday>("id = $0", id).find().firstOrNull()
         realm.writeBlocking {
             if (bday != null) {
                 findLatest(bday)?.also { delete(it) }
@@ -117,11 +117,21 @@ class RootComponent {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun saveGiftIdea(idea: String) {
+    fun saveGiftIdea(id: ObjectId, idea: String) {
         val gift = Gift(desc = idea)
         GlobalScope.launch {
             supabase.from("gift_ideas").insert(gift) {}
         }
+
+        realm.query<Birthday>("id = $0", id)
+            .first()
+            .find()
+            ?.also { bday ->
+                // Add a dog in a transaction
+                realm.writeBlocking {
+                    findLatest(bday)?.showGiftIdeaAlert = false
+                }
+            }
 
     }
 }

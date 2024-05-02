@@ -4,7 +4,7 @@ import Shared
 struct BdaySheet: View {
     var bday: Birthday
     var onDelete: (_ id: KbsonBsonObjectId) -> Void
-    var onSaveGift: (_ idea: String) -> Void
+    var onSaveGift: (_ id: KbsonBsonObjectId, _ idea: String) -> Void
     @Environment(\.presentationMode) var presentationMode
     @State private var showGiftAlert: Bool = true
     @State private var giftIdea: String = ""
@@ -54,7 +54,7 @@ struct BdaySheet: View {
                 Spacer()
             }
 
-            if showGiftAlert {
+            if showGiftAlert && bday.showGiftIdeaAlert {
                 VStack(alignment: .leading) {
                     HStack {
                         Text("Une idée cadeau ?").font(.system(size: 18, weight: .semibold)).padding(.bottom, 2)
@@ -79,9 +79,12 @@ struct BdaySheet: View {
 
 
                     HStack {
-                        Button(action: { onSaveGift(giftIdea); withAnimation {
-                            showGiftAlert.toggle()
-                        } }) {
+                        Button(action: {
+                            onSaveGift(bday.id, giftIdea); withAnimation {
+                                showGiftAlert.toggle()
+                                bday.showGiftIdeaAlert.toggle()
+                            }
+                        }) {
                             Text("envoyer")
                                 .font(.system(size: 18, weight: .semibold))
                                 .frame(maxWidth: .infinity, minHeight: 40, maxHeight: 40)
