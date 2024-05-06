@@ -34,7 +34,7 @@ struct BdayList: View {
                                     }
                             }
                             .sheet(item: $selectedBday) { item in
-                                BdaySheet(bday: item.bday, onDelete: rootComponent.delete, onSaveGift: rootComponent.saveGiftIdea)
+                                BdaySheet(bday: item.bday, onDelete: rootComponent.delete, onToggleNotification: rootComponent.toogleNotification, onSaveGift: rootComponent.saveGiftIdea)
                             }
                         } header: {
                             BdayListHeader(section: section)

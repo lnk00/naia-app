@@ -132,7 +132,19 @@ class RootComponent {
                     findLatest(bday)?.showGiftIdeaAlert = false
                 }
             }
+    }
 
+    fun toogleNotification(id: ObjectId) {
+        realm.query<Birthday>("id = $0", id)
+            .first()
+            .find()
+            ?.also { bday ->
+                // Add a dog in a transaction
+                realm.writeBlocking {
+                    val latestBday = findLatest(bday)
+                    latestBday?.reminderEnabled = !latestBday!!.reminderEnabled
+                }
+            }
     }
 }
 

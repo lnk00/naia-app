@@ -12,6 +12,7 @@ class Birthday : RealmObject {
     var date: String = ""
     var img: String = ""
     var showGiftIdeaAlert: Boolean = true
+    var reminderEnabled: Boolean = true
 }
 
 class BirthdaySection(var id: ObjectId, var sectionTitle: String, var birthdays: List<Birthday>)

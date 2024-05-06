@@ -4,10 +4,20 @@ import Shared
 struct BdaySheet: View {
     var bday: Birthday
     var onDelete: (_ id: KbsonBsonObjectId) -> Void
+    var onToggleNotification: (_ id: KbsonBsonObjectId) -> Void
     var onSaveGift: (_ id: KbsonBsonObjectId, _ idea: String) -> Void
     @Environment(\.presentationMode) var presentationMode
     @State private var showGiftAlert: Bool = true
+    @State private var notificationEnabled: Bool
     @State private var giftIdea: String = ""
+
+    init(bday: Birthday, onDelete: @escaping (_ id: KbsonBsonObjectId) -> Void, onToggleNotification: @escaping (_ id: KbsonBsonObjectId) -> Void, onSaveGift: @escaping (_ id: KbsonBsonObjectId, _ idea: String) -> Void) {
+        self.bday = bday
+        self.onDelete = onDelete
+        self.onToggleNotification = onToggleNotification
+        self.onSaveGift = onSaveGift
+        notificationEnabled = bday.reminderEnabled
+    }
 
     func formatDate(date: String) -> String {
         let formatter = DateFormatter()
@@ -18,10 +28,20 @@ struct BdaySheet: View {
         return formatter.string(from: d ?? Date.now)
     }
 
+    func toggleNotification() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/dd/yyyy"
+        formatter.locale = Locale(identifier: "fr_FR_POSIX")
+        let d = formatter.date(from: bday.date)
+        notificationEnabled ? deleteScheduledNotification(bday.id) : scheduleNotification(name: "\(bday.firstname) \(bday.lastname)", date: d ?? Date.now, id: bday.id)
+
+        onToggleNotification(bday.id)
+        notificationEnabled.toggle()
+        bday.reminderEnabled.toggle()
+    }
+
     var body: some View {
         VStack {
-
-
             VStack {
                 Spacer()
                 Image(bday.img).resizable().frame(width: 120, height: 120).aspectRatio(contentMode: .fit).padding(.bottom, 8)
@@ -31,12 +51,12 @@ struct BdaySheet: View {
                 }
 
                 HStack {
-                    Button(action: {}) {
+                    Button(action: { toggleNotification() }) {
                         Image(systemName: "bell.badge")
                             .font(.system(size: 20, weight: .bold))
                             .frame(width: 70, height: 70)
                             .foregroundColor(Color.white)
-                            .background(Color("AccentGreen"))
+                            .background(notificationEnabled ? Color("AccentGreen") : Color(hex: 0xF0EFF0))
                             .clipShape(Circle())
                     }
                     .disabled(false)
