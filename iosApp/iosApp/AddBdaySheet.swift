@@ -8,7 +8,7 @@ struct AddBdaySheet: View {
     @State private var firstname: String = ""
     @State private var lastname: String = ""
     @State private var date = Date.now
-    @State var img = ""
+    @State var img = "avatar1"
     @FocusState private var focusedField: FocusedField?
 
     var rootComponent: RootComponent

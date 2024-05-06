@@ -54,7 +54,7 @@ struct BdayList: View {
             VStack {
                 Spacer()
                 Image("empty_list").resizable().frame(width: 120, height: 120).aspectRatio(contentMode: .fit)
-                Text("Tu n'as pas encore ajouter d'anniversaire").font(.system(size: 20, weight: .bold)).multilineTextAlignment(.center)
+                Text("Tu n'as pas encore ajouté d'anniversaire").font(.system(size: 20, weight: .bold)).multilineTextAlignment(.center)
                 RoundedButton(actionCallback: onAdd)
                 Spacer()
             }

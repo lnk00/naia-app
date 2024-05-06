@@ -19,7 +19,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Naia").font(.system(size: 24, weight: .black))
+                Text("Naïa").font(.system(size: 24, weight: .black))
                 Spacer()
                 RoundedButton(actionCallback: onAdd)
             }
